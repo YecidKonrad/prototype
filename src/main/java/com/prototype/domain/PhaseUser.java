@@ -14,27 +14,29 @@ import javax.persistence.Table;
 @Table(name="phase_user")
 public class PhaseUser implements Serializable{
 	
-	/*@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false, updatable = false)
-	private Long idPhaseUser;*/
 	@EmbeddedId
-    UserPhaseKey idUserPhaseKey;
+    UserPhaseKey userPhaseKey =  new UserPhaseKey();
+	
 
 	@ManyToOne
 	@MapsId("idPhase")
 	@JoinColumn(name = "id_phase", nullable = false, foreignKey = @ForeignKey(name = "fk_phase_user_phase"))
-	private Phase phase;
+	public Phase phase;
 	
 	@ManyToOne
 	@MapsId("idUser")
 	@JoinColumn(name = "id_user", nullable = false, foreignKey = @ForeignKey(name = "fk_phase_user_user"))
-	private User user;
+	public User user;
 	
 	public PhaseUser(Phase phase, User user) {
 		this.phase = phase;
 		this.user = user;
 	}
+	
+	public PhaseUser() {
+	}
+
+
 
 	public Phase getPhase() {
 		return phase;
@@ -52,13 +54,14 @@ public class PhaseUser implements Serializable{
 		this.user = user;
 	}
 
-	public UserPhaseKey getIdUserPhaseKey() {
-		return idUserPhaseKey;
+	public UserPhaseKey getUserPhaseKey() {
+		return userPhaseKey;
 	}
 
-	public void setIdUserPhaseKey(UserPhaseKey idUserPhaseKey) {
-		this.idUserPhaseKey = idUserPhaseKey;
+	public void setUserPhaseKey(UserPhaseKey userPhaseKey) {
+		this.userPhaseKey = userPhaseKey;
 	}
+
 	
 	
 }

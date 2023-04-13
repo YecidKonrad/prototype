@@ -1,12 +1,9 @@
 package com.prototype.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -14,11 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="Phases")
@@ -33,26 +31,19 @@ public class Phase implements Serializable{
 	private Date createdDate;
 	private String description;
 	private int ordering;
+	
 	@ManyToOne
 	@JoinColumn(name = "id_state_phase", nullable = false, foreignKey = @ForeignKey(name = "fk_phase_state_phase"))
 	private StatePhase statePhase;
+	
 	@ManyToOne
+	@JsonManagedReference
 	@JoinColumn(name = "created_by", nullable = false, foreignKey = @ForeignKey(name = "fk_phase_user"))
 	private User createdBy;
-	/*@ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-	@JoinTable(name = "phase_user", joinColumns = @JoinColumn(name = "id_phase"), inverseJoinColumns = @JoinColumn(name = "id_user"))*/
-	@ManyToMany()
-	@JoinTable(
-	    name = "phase_user",
-	    joinColumns = @JoinColumn(name = "id_phase"),
-	    inverseJoinColumns = @JoinColumn(name = "id_user")
-	)
-	private Set<User> usuarios;
-
 	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private Set<PhaseUser> usuarios;	
 	
 	public Phase(Long idPhase, String phase, Date startDuration, Date endDuration, Date createdDate, String description,
 			int ordering, StatePhase statePhase, User createdBy) {
@@ -142,18 +133,16 @@ public class Phase implements Serializable{
 		this.createdBy = createdBy;
 	}
 
-
-
-	public Set<User> getUsuarios() {
+	public Set<PhaseUser> getUsuarios() {
 		return usuarios;
 	}
 
-
-
-	public void setUsuarios(Set<User> usuarios) {
+	public void setUsuarios(Set<PhaseUser> usuarios) {
 		this.usuarios = usuarios;
 	}
-	
+
+
+
 	
 	
 }

@@ -40,8 +40,8 @@ public class Activity implements Serializable{
 	@JoinColumn(name = "created_by", nullable = false, foreignKey = @ForeignKey(name = "fk_activity_user"))
 	private User createdBy;
 
-	@OneToMany(mappedBy = "user")
-	private Set<ActivityUser> usuarios;
+	/*@OneToMany(mappedBy = "user")
+	private Set<ActivityUser> usuarios;*/
 	
 	
 	
@@ -113,16 +113,6 @@ public class Activity implements Serializable{
 	}
 
 
-
-	public Set<ActivityUser> getUsuarios() {
-		return usuarios;
-	}
-
-
-
-	public void setUsuarios(Set<ActivityUser> usuarios) {
-		this.usuarios = usuarios;
-	}
 
 
 	

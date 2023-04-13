@@ -1,9 +1,7 @@
 package com.prototype.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,9 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User implements Serializable {	
@@ -42,11 +41,12 @@ public class User implements Serializable {
     @JoinColumn(name = "id_identification_type", nullable = false, foreignKey = @ForeignKey(name = "fk_user_identification_type"))
     private IdentificationTypes identificationType;
     
-    @ManyToMany(mappedBy = "usuarios")
-    private Set<Phase> phases;
+    @OneToMany(mappedBy = "phase")
+    private Set<PhaseUser> phases;
     
-    @ManyToMany(mappedBy = "activity")
-    private Set<ActivityUser> activities;
+    @OneToMany(mappedBy = "createdBy")
+    @JsonIgnore
+    private Set<Phase> phasesCreatedByUser;
 
     public User(){}
 
@@ -72,7 +72,7 @@ public class User implements Serializable {
 		this.authorities = authorities;
 		this.isActive = isActive;
 		this.isNotLocked = isNotLocked;
-		this.identificationType = identificationType;
+		this.identificationType = identificationType; 
 	}
 
 
@@ -251,11 +251,34 @@ public class User implements Serializable {
 	}
 
 
-	public User(Set<Phase> phases) {
-		super();
+	public Long getIdUser() {
+		return idUser;
+	}
+
+
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
+
+
+	public Set<PhaseUser> getPhases() {
+		return phases;
+	}
+
+
+	public void setPhases(Set<PhaseUser> phases) {
 		this.phases = phases;
 	}
 
+
+	public Set<Phase> getPhasesCreatedByUser() {
+		return phasesCreatedByUser;
+	}
+
+
+	public void setPhasesCreatedByUser(Set<Phase> phasesCreatedByUser) {
+		this.phasesCreatedByUser = phasesCreatedByUser;
+	}
 
 
 }

@@ -2,7 +2,9 @@ package com.prototype.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -11,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.prototype.domain.Phase;
 import com.prototype.domain.PhaseUser;
 import com.prototype.domain.StatePhase;
@@ -45,8 +49,14 @@ public class PhaseServiceImpl implements PhaseService {
 
 	@Override
 	public PhaseResponseDto create(PhaseRequestDto phaseRequestDto, String userTokenHeader) {
-		System.out.println(phaseRequestDto.toString());
+		JsonMapper mapper = new JsonMapper();
+		try {
+			System.out.println(mapper.writeValueAsString(phaseRequestDto));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		System.out.println(userTokenHeader);
+		
 		
 		Phase phase = new Phase();
 		phase.setCreatedDate(new Date());
@@ -59,15 +69,14 @@ public class PhaseServiceImpl implements PhaseService {
 		//TODO validate than the user userTokenHeader exists in DB
 		phase.setCreatedBy(userRepository.findByUsername(userTokenHeader));
 		Phase phaseSaved = phaseRepository.save(phase);
-		//phaseRequestDto.getUsersAsingPhase().forEach((key, value) -> userRepository.findByUsername(value));
 		//TODO validate than the users of REQUETS (phaseRequestDto) exists in DB
 		phaseRequestDto.getUsersAsingPhase().forEach((key, value) -> phaseUserRepository.save(new PhaseUser(new Phase(phaseSaved.getIdPhase()), new User(key))));
 		return new PhaseResponseDto(phaseSaved.getIdPhase(), phaseSaved.getPhase());
 	}
 
 	@Override
-	public List<Phase> getPhases() {
-		List<Phase> phases = phaseRepository.findAll();
+	public Set<Phase> getPhases() {
+		Set<Phase> phases = new HashSet<>(phaseRepository.findAll());
 		return phases;
 	}
 
