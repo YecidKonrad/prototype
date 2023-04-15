@@ -22,7 +22,9 @@ import com.prototype.domain.User;
 import com.prototype.dto.PhaseRequestDto;
 import com.prototype.dto.PhaseResponseDto;
 import com.prototype.dto.StatePhaseDto;
+import com.prototype.dto.UserDto;
 import com.prototype.mapper.PhaseMapper;
+import com.prototype.mapper.UserMapper;
 import com.prototype.repository.PhaseRepository;
 import com.prototype.repository.PhaseUserRepository;
 import com.prototype.repository.UserRepository;
@@ -84,7 +86,6 @@ public class PhaseServiceImpl implements PhaseService {
 	public List<PhaseResponseDto> getAllPhasesDetails() {
 		List<PhaseResponseDto> phasesResponse = new ArrayList<>();
 		List<Phase> phases = phaseRepository.findAll();
-		//TODO recorrer las fases, y sacar los usuarios asociados
 		for (Phase phase : phases) {
 			PhaseResponseDto phaseResponseDto = new PhaseResponseDto();
 			phaseResponseDto.setCreatedBy(phaseMapper.mapperUserToUserDto(phase.getCreatedBy()));
@@ -95,12 +96,14 @@ public class PhaseServiceImpl implements PhaseService {
 			phaseResponseDto.setOrdering(phase.getOrdering());
 			phaseResponseDto.setPhase(phase.getPhase());
 			phaseResponseDto.setStartDuration(phase.getStartDuration());
-			//TODO crear el mapper 
 			phaseResponseDto.setStatePhase(new StatePhaseDto(phase.getStatePhase().getIdStatePhase(), phase.getStatePhase().getState()));
-			
-			//phaseUserRepository.findPhaseUserByIdPhase(phase.getIdPhase()).forEach((ph)-> System.out.println(ph.getUser().getId()));
-			
-			//phaseResponseDto.setUsersasignedToPhase(usersasignedToPhase);
+			List<UserDto> usersasignedToPhase = new ArrayList<>();			
+			phaseUserRepository.findPhaseUserByPhase(new Phase(phase.getIdPhase())).forEach((ph)-> {
+				User userAsigned = userRepository.findByUsername(ph.getUser().getUsername());				
+				usersasignedToPhase.add(UserMapper.convertUserToUserDto(userAsigned));				
+				});
+			phaseResponseDto.setUsersasignedToPhase(usersasignedToPhase);
+			phasesResponse.add(phaseResponseDto);
 		}
 		return phasesResponse;
 	}

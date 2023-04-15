@@ -1,11 +1,16 @@
 package com.prototype.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
 import com.prototype.domain.User;
 
-public class ActivityRequestDto {
+public class ActivityRequestDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tittle;
 	private String description;
 	private Date startDuration;

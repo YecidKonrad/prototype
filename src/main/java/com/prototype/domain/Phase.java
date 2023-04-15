@@ -37,7 +37,7 @@ public class Phase implements Serializable{
 	private StatePhase statePhase;
 	
 	@ManyToOne
-	@JsonManagedReference
+	@JsonIgnore
 	@JoinColumn(name = "created_by", nullable = false, foreignKey = @ForeignKey(name = "fk_phase_user"))
 	private User createdBy;
 	

@@ -1,6 +1,12 @@
 package com.prototype.dto;
 
-public class UserRequestDto {
+import java.io.Serializable;
+
+public class UserRequestDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String firstName;
 	private String  lastName;
 	private String  username;
@@ -8,8 +14,7 @@ public class UserRequestDto {
 	private String  institution;
 	private Long idIdentificationType;
 	
-	
-	
+		
 	public UserRequestDto(String firstName, String lastName, String username, String email, String institution,
 			Long idIdentificationType) {
 		this.firstName = firstName;

@@ -1,9 +1,14 @@
 package com.prototype.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class PhaseResponseDto {
+public class PhaseResponseDto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long idPhase;
 	private String phase;
 	private Date startDuration;

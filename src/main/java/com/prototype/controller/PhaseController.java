@@ -56,7 +56,7 @@ public class PhaseController extends ExceptionHandling {
 	
 	@GetMapping("/phases")
 	public ResponseEntity<?> getPhases(){	
-		return new ResponseEntity<>(phaseService.getPhases(), OK);
+		return new ResponseEntity<>(phaseService.getAllPhasesDetails(), OK);
 	}
 	
 	//TODO getPhasesbyId

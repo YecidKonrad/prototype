@@ -44,10 +44,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "phase")
     private Set<PhaseUser> phases;
     
-    @OneToMany(mappedBy = "createdBy")
-    @JsonIgnore
-    private Set<Phase> phasesCreatedByUser;
-
     public User(){}
 
    
@@ -269,16 +265,5 @@ public class User implements Serializable {
 	public void setPhases(Set<PhaseUser> phases) {
 		this.phases = phases;
 	}
-
-
-	public Set<Phase> getPhasesCreatedByUser() {
-		return phasesCreatedByUser;
-	}
-
-
-	public void setPhasesCreatedByUser(Set<Phase> phasesCreatedByUser) {
-		this.phasesCreatedByUser = phasesCreatedByUser;
-	}
-
 
 }

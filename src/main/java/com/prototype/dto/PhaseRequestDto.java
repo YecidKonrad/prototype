@@ -1,12 +1,17 @@
 package com.prototype.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
 import com.prototype.domain.User;
 
-public class PhaseRequestDto {
+public class PhaseRequestDto implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String phase;
 	private Date startDuration;
 	private Date endDuration;
