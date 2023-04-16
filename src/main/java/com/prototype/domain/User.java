@@ -42,7 +42,12 @@ public class User implements Serializable {
     private IdentificationTypes identificationType;
     
     @OneToMany(mappedBy = "phase")
+    @JsonIgnore
     private Set<PhaseUser> phases;
+    
+    @OneToMany(mappedBy = "activity")
+    @JsonIgnore
+    private Set<ActivityUser> activities;
     
     public User(){}
 

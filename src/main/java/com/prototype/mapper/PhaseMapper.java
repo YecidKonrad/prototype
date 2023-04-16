@@ -1,21 +1,23 @@
 package com.prototype.mapper;
 
-import com.prototype.domain.User;
-import com.prototype.dto.UserDto;
+import com.prototype.domain.Phase;
+import com.prototype.dto.PhaseDto;
+import com.prototype.dto.StatePhaseDto;
 
-public  class PhaseMapper {
+public  class PhaseMapper {	
 	
-	
-	public UserDto mapperUserToUserDto(User user) {
-		UserDto userDto = new UserDto();
-		userDto.setActive(user.isActive());
-		userDto.setEmail(user.getEmail());
-		userDto.setFirstName(user.getFirstName());
-		userDto.setInstitution(user.getInstitution());
-		userDto.setLastName(user.getLastName());
-		userDto.setUserId(user.getUserId());
-		userDto.setUsername(user.getUsername());
-		return userDto;
+	public static PhaseDto mapperPhaseToPhaseDto(Phase phase) {
+		PhaseDto phaseDto = new PhaseDto();
+		phaseDto.setCreatedBy(UserMapper.mapperUserToUserDto(phase.getCreatedBy()));
+		phaseDto.setCreatedDate(phase.getCreatedDate());
+		phaseDto.setDescription(phase.getDescription());
+		phaseDto.setEndDuration(phase.getEndDuration());
+		phaseDto.setIdPhase(phase.getIdPhase());
+		phaseDto.setOrdering(phase.getOrdering());
+		phaseDto.setPhase(phase.getPhase());
+		phaseDto.setStartDuration(phase.getStartDuration());
+		phaseDto.setStatePhase(new StatePhaseDto(phase.getStatePhase().getIdStatePhase(), phase.getStatePhase().getState()));		
+		return phaseDto;
 	}
 
 }

@@ -8,8 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 @Entity
-public class StateActivity {
+public class StateActivity implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		@Column(nullable = false, updatable = false)
@@ -20,8 +21,12 @@ public class StateActivity {
 			this.idStateActivity = idStateActivity;
 			this.state = state;
 		}
-		
-		
+				
+		public StateActivity() {
+		}
+
+
+
 		public StateActivity(Long idStateActivity) {
 			this.idStateActivity = idStateActivity;
 		}

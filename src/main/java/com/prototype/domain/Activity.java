@@ -1,12 +1,9 @@
 package com.prototype.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -14,15 +11,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="Activities")
 public class Activity implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
@@ -37,11 +36,14 @@ public class Activity implements Serializable{
 	@JoinColumn(name = "id_state_activity", nullable = false, foreignKey = @ForeignKey(name = "fk_activity_state_activity"))
 	private StateActivity stateActivity;
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "created_by", nullable = false, foreignKey = @ForeignKey(name = "fk_activity_user"))
 	private User createdBy;
 
-	/*@OneToMany(mappedBy = "user")
-	private Set<ActivityUser> usuarios;*/
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private Set<ActivityUser> usuarios;
+
 	
 	
 	
@@ -110,6 +112,14 @@ public class Activity implements Serializable{
 	}
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public Set<ActivityUser> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(Set<ActivityUser> usuarios) {
+		this.usuarios = usuarios;
 	}
 
 

@@ -10,4 +10,5 @@ import com.prototype.domain.PhaseUser;
 public interface PhaseUserRepository extends JpaRepository<PhaseUser, Long> {
 
 	List<PhaseUser> findPhaseUserByPhase(Phase phase);
+	public void deleteByPhase(Phase phase);
 }

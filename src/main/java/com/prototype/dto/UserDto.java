@@ -7,6 +7,7 @@ public class UserDto implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+    private Long idUser;
 	private String userId;
 	    private String firstName;
 	    private String lastName;
@@ -73,6 +74,14 @@ public class UserDto implements Serializable{
 		}
 		public void setActive(boolean isActive) {
 			this.isActive = isActive;
+		}
+
+		public Long getIdUser() {
+			return idUser;
+		}
+
+		public void setIdUser(Long idUser) {
+			this.idUser = idUser;
 		}
 	    
 	    

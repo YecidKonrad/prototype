@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class PhaseResponseDto implements Serializable{
+public class PhaseDto implements Serializable{
 	/**
 	 * 
 	 */
@@ -18,14 +18,13 @@ public class PhaseResponseDto implements Serializable{
 	private int ordering;
 	private StatePhaseDto statePhase;
 	private UserDto createdBy;
-	private List<UserDto> UsersasignedToPhase;
+	private List<UserDto> usersAsignedToPhase;
 	
 	
 	
-	public PhaseResponseDto() {
-		super();
+	public PhaseDto() {
 	}
-	public PhaseResponseDto(Long idPhase, String phase, Date startDuration, Date endDuration, Date createdDate,
+	public PhaseDto(Long idPhase, String phase, Date startDuration, Date endDuration, Date createdDate,
 			String description, int ordering, StatePhaseDto statePhase, UserDto createdBy,
 			List<UserDto> usersasignedToPhase) {
 		this.idPhase = idPhase;
@@ -37,9 +36,9 @@ public class PhaseResponseDto implements Serializable{
 		this.ordering = ordering;
 		this.statePhase = statePhase;
 		this.createdBy = createdBy;
-		UsersasignedToPhase = usersasignedToPhase;
+		usersAsignedToPhase = usersasignedToPhase;
 	}
-	public PhaseResponseDto(Long idPhase, String phase) {
+	public PhaseDto(Long idPhase, String phase) {
 		this.idPhase = idPhase;
 		this.phase = phase;
 	}
@@ -97,11 +96,11 @@ public class PhaseResponseDto implements Serializable{
 	public void setCreatedBy(UserDto createdBy) {
 		this.createdBy = createdBy;
 	}
-	public List<UserDto> getUsersasignedToPhase() {
-		return UsersasignedToPhase;
+	public List<UserDto> getUsersAsignedToPhase() {
+		return usersAsignedToPhase;
 	}
-	public void setUsersasignedToPhase(List<UserDto> usersasignedToPhase) {
-		UsersasignedToPhase = usersasignedToPhase;
+	public void setUsersAsignedToPhase(List<UserDto> usersasignedToPhase) {
+		usersAsignedToPhase = usersasignedToPhase;
 	}
 	
 	

@@ -1,5 +1,7 @@
 package com.prototype.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -12,7 +14,7 @@ import com.prototype.domain.ActivityUser;
 import com.prototype.domain.StateActivity;
 import com.prototype.domain.User;
 import com.prototype.dto.ActivityRequestDto;
-import com.prototype.dto.ActivityResponseDto;
+import com.prototype.dto.ActivityDto;
 import com.prototype.repository.ActivityRepository;
 import com.prototype.repository.ActivityUserRepository;
 import com.prototype.repository.UserRepository;
@@ -37,7 +39,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 
 	@Override
-	public ActivityResponseDto create(ActivityRequestDto activityRequestDto, String userTokenHeder) {
+	public ActivityDto create(ActivityRequestDto activityRequestDto, String userTokenHeder) {
 		Activity activity = new Activity();
 		activity.setCreatedBy(userRepository.findByUsername(userTokenHeder));
 		activity.setCreatedDate(activityRequestDto.getCreatedDate());
@@ -48,10 +50,16 @@ public class ActivityServiceImpl implements ActivityService {
 		activity.setStateActivity(new StateActivity(activityRequestDto.getIdStateActivity()));
 		activity.setTittle(activityRequestDto.getTittle());
 		Activity activitySaved = activityRepository.save(activity);
-		activityRequestDto.getUsersAsingActivity().forEach((key, value) -> userRepository.findByUsername(value));
-		activityRequestDto.getUsersAsingActivity().forEach((key, value) -> activityUserRepository
-				.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key))));
-		return new ActivityResponseDto(activitySaved.getIdActivity(), activitySaved.getTittle());
+		System.out.println("saved " + activitySaved.getIdActivity());
+		//activityRequestDto.getUsersAsingActivity().forEach((key, value) -> userRepository.findByUsername(value));
+		activityRequestDto.getUsersAsingActivity().forEach((key, value) -> activityUserRepository.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key))));
+		return new ActivityDto(activitySaved.getIdActivity(), activitySaved.getTittle());
+	}
+
+
+	@Override
+	public List<Activity> getActivities() {
+		return activityRepository.findAll();
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.prototype.domain.StateActivity;
 
-public class ActivityResponseDto {
+public class ActivityDto {
 	private Long idActivity;
 	private String tittle;
 	private String description;
@@ -15,9 +15,9 @@ public class ActivityResponseDto {
 	private int priority;
 	private StateActivity stateActivity;
 	private UserDto createdBy;
-	private List<UserDto> UsersasignedToPhase;
+	private List<UserDto> UsersasignedToActivity;
 	
-	public ActivityResponseDto(Long idActivity, String tittle, String description, Date startDuration, Date endDuration,
+	public ActivityDto(Long idActivity, String tittle, String description, Date startDuration, Date endDuration,
 			Date createdDate, int priority, StateActivity stateActivity, UserDto createdBy,
 			List<UserDto> usersasignedToPhase) {
 		this.idActivity = idActivity;
@@ -29,19 +29,19 @@ public class ActivityResponseDto {
 		this.priority = priority;
 		this.stateActivity = stateActivity;
 		this.createdBy = createdBy;
-		UsersasignedToPhase = usersasignedToPhase;
+		UsersasignedToActivity = usersasignedToPhase;
 	}
 	
 	
 	
-	public ActivityResponseDto(Long idActivity, String tittle) {
+	public ActivityDto(Long idActivity, String tittle) {
 		this.idActivity = idActivity;
 		this.tittle = tittle;
 	}
 
 	
 
-	public ActivityResponseDto() {
+	public ActivityDto() {
 	}
 
 
@@ -100,11 +100,11 @@ public class ActivityResponseDto {
 	public void setCreatedBy(UserDto createdBy) {
 		this.createdBy = createdBy;
 	}
-	public List<UserDto> getUsersasignedToPhase() {
-		return UsersasignedToPhase;
+	public List<UserDto> getUsersasignedToActivity() {
+		return UsersasignedToActivity;
 	}
-	public void setUsersasignedToPhase(List<UserDto> usersasignedToPhase) {
-		UsersasignedToPhase = usersasignedToPhase;
+	public void setUsersasignedToActivity(List<UserDto> usersasignedToActivity) {
+		UsersasignedToActivity = usersasignedToActivity;
 	}
 	
 	

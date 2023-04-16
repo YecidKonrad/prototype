@@ -6,5 +6,4 @@ import com.prototype.domain.Phase;
 
 public interface PhaseRepository extends JpaRepository<Phase, Long> {
 
-
 }

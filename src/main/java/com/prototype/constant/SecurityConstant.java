@@ -11,7 +11,11 @@ public class SecurityConstant {
     public static final String FORBIDDEN_MESSAGE = "You need to log in to access this page";
     public static final String ACCESS_DENIED_MESSAGE = "You do not have permission to access this page";
     public static final String OPTIONS_HTTP_METHOD = "OPTIONS";
-    public static final String[] PUBLIC_URLS = { "/user/login", "/user/register", "/user/resetpassword/**", "/user/image/**", "/phase/create",
-    		"/phase/json", "/phase/phases", "/activity/create", "/activity/json" };
+   /* public static final String[] PUBLIC_URLS = {"/swagger-ui.html", "/user/login", "/user/register", "/user/resetpassword/**", "/user/image/**", "/phase/create",
+    		"/phase/json", "/phase/phases", "/phase/deletePhase/*","/phase/phaseDetails/*","/phase/phase/*", "/activity/create", "/activity/json" };*/
    // public static final String[] PUBLIC_URLS = { "**" };
+    public static final String[] PUBLIC_URLS = {"/swagger-ui.html","/user/*", "/user/*/*", 
+    		/*"/user/login", "/user/register",*/
+    	"/user/resetpassword/**", "/user/image/**", 
+    	"/phase/*" ,"/phase/*/*","/activity/*", "/activity/*/*" };
 }

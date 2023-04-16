@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prototype.dto.ActivityRequestDto;
-import com.prototype.dto.ActivityResponseDto;
+import com.prototype.dto.ActivityDto;
 import com.prototype.exception.ExceptionHandling;
 import com.prototype.service.ActivityService;
 import com.prototype.utility.JWTTokenProvider;
@@ -38,13 +38,15 @@ public class ActivityController extends ExceptionHandling {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<ActivityResponseDto> create(@RequestHeader(JWT_TOKEN_HEADER) String tokenHeader, @RequestBody ActivityRequestDto activityRequestDto) {
-		System.out.println(activityRequestDto);
-		System.out.println(jwtTokenProvider.getSubject(tokenHeader));
-		ActivityResponseDto activityResponseDto = activityService.create(activityRequestDto, jwtTokenProvider.getSubject(tokenHeader));
+	public ResponseEntity<ActivityDto> create(@RequestHeader(JWT_TOKEN_HEADER) String tokenHeader, @RequestBody ActivityRequestDto activityRequestDto) {
+		ActivityDto activityResponseDto = activityService.create(activityRequestDto, jwtTokenProvider.getSubject(tokenHeader));
 		return new ResponseEntity<>(activityResponseDto, OK);
 	}
 	
+	@GetMapping("/activities")
+	public ResponseEntity<?> getActivities(){
+		return new ResponseEntity<>(activityService.getActivities(), OK);
+	}
 
 
 }

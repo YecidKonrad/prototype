@@ -15,8 +15,10 @@ import javax.persistence.Table;
 public class ActivityUser implements Serializable{
 	
 
+	private static final long serialVersionUID = 1L;
+
 	@EmbeddedId
-    UserActivityKey idUserActivityKey;
+    UserActivityKey idUserActivityKey = new UserActivityKey();
 
 	@ManyToOne
 	@MapsId("idActivity")
