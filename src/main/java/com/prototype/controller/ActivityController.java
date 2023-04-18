@@ -47,6 +47,14 @@ public class ActivityController extends ExceptionHandling {
 	public ResponseEntity<?> getActivities(){
 		return new ResponseEntity<>(activityService.getActivities(), OK);
 	}
+	//TODO obtener detalle de actividades
+	//TODO obtener actividad Detalle por ID
+	//TODO obtener actividad por ID
+	//TODO modificar actividad
+	//TODO agregar usuarios a una actividad
+	//TODO agregar fases a una actividad
+	//TODO modificar fases de una actividad
+	//TODO eliminar fases de un actividad
 
 
 }

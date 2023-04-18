@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ import static org.springframework.http.HttpStatus.OK;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", exposedHeaders = {JWT_TOKEN_HEADER})
 @RequestMapping(path = { "/", "/user" })
 public class UserController extends ExceptionHandling {
 	private AuthenticationManager authenticationManager;
@@ -66,7 +68,7 @@ public class UserController extends ExceptionHandling {
 	public String getUserNameByToken(@RequestHeader(JWT_TOKEN_HEADER) String tokenHeader) {
 		return jwtTokenProvider.getSubject(tokenHeader);
 	}
-	
+
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getUsers() {
 		return new ResponseEntity<>(userService.getUsers(), OK);
@@ -81,4 +83,5 @@ public class UserController extends ExceptionHandling {
 	private void authenticate(String username, String password) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	}
+//TODO modificar valores del usuario
 }

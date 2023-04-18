@@ -43,6 +43,10 @@ public class Activity implements Serializable{
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private Set<ActivityUser> usuarios;
+	
+	@OneToMany(mappedBy = "phase")
+	@JsonIgnore
+	private Set<ActivityPhase> phases;
 
 	
 	

@@ -1,5 +1,8 @@
 package com.prototype.configuration;
 
+import static com.prototype.constant.SecurityConstant.PUBLIC_URLS;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,9 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.prototype.filter.JwtAccessDeniedHandler;
 import com.prototype.filter.JwtAuthenticationEntryPoint;
 import com.prototype.filter.JwtAuthorizationFilter;
-
-import static com.prototype.constant.SecurityConstant.PUBLIC_URLS;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 
 @Configuration
@@ -68,4 +68,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    
 }

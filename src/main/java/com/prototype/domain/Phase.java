@@ -44,7 +44,11 @@ public class Phase implements Serializable{
 	
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
-	private Set<PhaseUser> usuarios;	
+	private Set<PhaseUser> usuarios;
+	
+	@OneToMany(mappedBy = "activity")
+	@JsonIgnore
+	private Set<ActivityPhase> activities;
 	
 	public Phase(Long idPhase, String phase, Date startDuration, Date endDuration, Date createdDate, String description,
 			int ordering, StatePhase statePhase, User createdBy) {
