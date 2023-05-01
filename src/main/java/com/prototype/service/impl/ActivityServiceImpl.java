@@ -1,6 +1,7 @@
 package com.prototype.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -50,9 +51,10 @@ public class ActivityServiceImpl implements ActivityService {
 		activity.setStateActivity(new StateActivity(activityRequestDto.getIdStateActivity()));
 		activity.setTittle(activityRequestDto.getTittle());
 		Activity activitySaved = activityRepository.save(activity);
-		System.out.println("saved " + activitySaved.getIdActivity());
-		//activityRequestDto.getUsersAsingActivity().forEach((key, value) -> userRepository.findByUsername(value));
-		activityRequestDto.getUsersAsingActivity().forEach((key, value) -> activityUserRepository.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key))));
+		System.out.println("saved Activity # " + activitySaved.getIdActivity());
+		Optional.ofNullable(activityRequestDto.getUsersAsingActivity()).ifPresent(users -> users.forEach((key, value) ->
+			activityUserRepository.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key)))));
+		//activityRequestDto.getUsersAsingActivity().forEach((key, value) -> activityUserRepository.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key))));
 		return new ActivityDto(activitySaved.getIdActivity(), activitySaved.getTittle());
 	}
 

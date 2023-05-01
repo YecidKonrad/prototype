@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			throws UserNotFoundException, UsernameExistException, EmailExistException, IOException {
 		User userExits = findUserByUsername(user.getUsername());
 		if (userExits != null) {
-			System.out.println("User for update exists  : " + user.getUsername());
+			System.out.println("User for update exists  : " + user);
 			userExits.setFirstName(user.getFirstName());
 			userExits.setLastName(user.getLastName());
 			userExits.setUsername(user.getUsername());

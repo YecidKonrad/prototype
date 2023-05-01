@@ -7,6 +7,9 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class UserPhaseKey implements Serializable {
 	
+
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "id_user")
     public Long idUser;
 
