@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import com.prototype.service.PhaseService;
 import com.prototype.utility.JWTTokenProvider;
 
 @RestController
+@CrossOrigin(origins = "*", exposedHeaders = {JWT_TOKEN_HEADER})
 @RequestMapping(path = { "/phase" })
 public class PhaseController extends ExceptionHandling {
 	private PhaseService phaseService;

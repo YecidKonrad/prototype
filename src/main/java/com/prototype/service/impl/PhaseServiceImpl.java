@@ -11,29 +11,29 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.prototype.domain.Activity;
+import com.prototype.domain.ActivityPhase;
 import com.prototype.domain.Phase;
 import com.prototype.domain.PhaseUser;
 import com.prototype.domain.StatePhase;
 import com.prototype.domain.User;
-import com.prototype.dto.PhaseRequestDto;
+import com.prototype.dto.ActivityDto;
 import com.prototype.dto.PhaseDto;
-import com.prototype.dto.StatePhaseDto;
+import com.prototype.dto.PhaseRequestDto;
 import com.prototype.dto.UserDto;
 import com.prototype.mapper.PhaseMapper;
 import com.prototype.mapper.UserMapper;
+import com.prototype.repository.PhaseActivityRepository;
 import com.prototype.repository.PhaseRepository;
 import com.prototype.repository.PhaseUserRepository;
 import com.prototype.repository.UserRepository;
 import com.prototype.service.PhaseService;
-import com.prototype.utility.Utilities;
 
 @Service
 @Transactional
@@ -42,14 +42,18 @@ public class PhaseServiceImpl implements PhaseService {
 	private PhaseRepository phaseRepository;
 	private PhaseUserRepository phaseUserRepository;
 	private UserRepository userRepository;
+	private ActivityServiceImpl activityServiceImpl;
+	private PhaseActivityRepository phaseActivityRepository;
 	JsonMapper mapper = new JsonMapper();
 
 	@Autowired
 	public PhaseServiceImpl(PhaseRepository phaseRepository, PhaseUserRepository phaseUserRepository,
-			UserRepository userRepository) {
+			UserRepository userRepository, ActivityServiceImpl activityServiceImpl, PhaseActivityRepository phaseActivityRepository) {
 		this.phaseRepository = phaseRepository;
 		this.phaseUserRepository = phaseUserRepository;
 		this.userRepository = userRepository;
+		this.activityServiceImpl = activityServiceImpl;
+		this.phaseActivityRepository = phaseActivityRepository;
 
 	}
 
@@ -67,6 +71,10 @@ public class PhaseServiceImpl implements PhaseService {
 		Phase phaseSaved = phaseRepository.save(phase);
 		// TODO validate than the users of REQUETS (phaseRequestDto) exists in DB
 		phaseRequestDto.getUsersAsingPhase().forEach((key, value) -> phaseUserRepository.save(new PhaseUser(new Phase(phaseSaved.getIdPhase()), new User(key))));
+		phaseRequestDto.getActivitiesAsingPhase().forEach(acitivity -> {
+		ActivityDto activitySaved = activityServiceImpl.create(acitivity, userTokenHeader);
+		phaseActivityRepository.save(new ActivityPhase(new Activity(activitySaved.getIdActivity()), new Phase(phaseSaved.getIdPhase())));
+		});
 		return new PhaseDto(phaseSaved.getIdPhase(), phaseSaved.getPhase());
 	}
 
@@ -171,5 +179,7 @@ public class PhaseServiceImpl implements PhaseService {
 		});
 		return usersAsignedToPhase;
 	}
+	
+
 
 }

@@ -2,6 +2,7 @@ package com.prototype.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.prototype.domain.User;
@@ -20,7 +21,7 @@ public class PhaseRequestDto implements Serializable {
 	private Long idStatePhase;
 	private Map<Long, String> usersAsingPhase;
 	private User createdBy;
-	
+	private List<ActivityRequestDto> activitiesAsingPhase;
 	
 	
 	
@@ -92,6 +93,14 @@ public class PhaseRequestDto implements Serializable {
 
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public List<ActivityRequestDto> getActivitiesAsingPhase() {
+		return activitiesAsingPhase;
+	}
+
+	public void setActivitiesAsingPhase(List<ActivityRequestDto> activitiesAsingPhase) {
+		this.activitiesAsingPhase = activitiesAsingPhase;
 	}
 	
 	

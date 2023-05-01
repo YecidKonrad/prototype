@@ -1,7 +1,11 @@
 package com.prototype.mapper;
 
+
+
 import com.prototype.domain.User;
 import com.prototype.dto.UserDto;
+import com.prototype.dto.UserRequestDto;
+import com.prototype.enumeration.Role;
 
 public class UserMapper {
 	
@@ -16,5 +20,5 @@ public class UserMapper {
 		userDto.setUsername(user.getUsername());
 		return userDto;
 	}
-
+	
 }

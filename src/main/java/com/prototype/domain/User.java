@@ -75,6 +75,13 @@ public class User implements Serializable {
 		this.isNotLocked = isNotLocked;
 		this.identificationType = identificationType; 
 	}
+    
+
+
+	public User(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 
 
 	public User(Long id) {

@@ -1,5 +1,24 @@
 package com.prototype.service.impl;
 
+import static com.prototype.constant.UserImplConstant.EMAIL_ALREADY_EXISTS;
+import static com.prototype.constant.UserImplConstant.FOUND_USER_BY_USERNAME;
+import static com.prototype.constant.UserImplConstant.NO_USER_FOUND_BY_USERNAME;
+import static com.prototype.constant.UserImplConstant.USERNAME_ALREADY_EXISTS;
+import static com.prototype.enumeration.Role.ROLE_SUPER_ADMIN;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.transaction.Transactional;
+
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,25 +30,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.prototype.domain.IdentificationTypes;
 import com.prototype.domain.User;
 import com.prototype.domain.UserPrincipal;
+import com.prototype.dto.UserRequestDto;
+import com.prototype.enumeration.Role;
 import com.prototype.exception.domain.EmailExistException;
 import com.prototype.exception.domain.UserNotFoundException;
 import com.prototype.exception.domain.UsernameExistException;
+import com.prototype.mapper.UserMapper;
 import com.prototype.repository.UserRepository;
 import com.prototype.service.UserService;
-
-import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import static com.prototype.constant.UserImplConstant.*;
-import static com.prototype.enumeration.Role.*;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Service
 @Transactional
@@ -38,6 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
@@ -77,8 +91,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(encodedPassword);
         user.setActive(true);
         user.setNotLocked(true);
-        user.setRole(ROLE_USER.name());
-        user.setAuthorities(ROLE_USER.getAuthorities());
+        user.setRole(ROLE_SUPER_ADMIN.name());
+        user.setAuthorities(ROLE_SUPER_ADMIN.getAuthorities());
         user.setProfileImageUrl(getTemporaryProfileImageUrl());
         user.setIdentificationType(new IdentificationTypes(idIdentificationType));
         User userSaved = userRepository.save(user);
@@ -102,7 +116,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private String getTemporaryProfileImageUrl() {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH).toUriString();
+      //  return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH).toUriString();
+    	return "https://xsgames.co/randomusers/avatar.php?g=pixel";
     }
 
     private String encodePassword(String password) {
@@ -142,5 +157,76 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return null;
         }
     }
+
+	@Override
+	public User uploadFile(String username, MultipartFile profileImage) throws IOException {
+		String extensionAvaliables[] = {"jpg","png"};
+		 File directory = new File(UPLOAD_DIRECTORY);
+		    if (! directory.exists()){
+		        directory.mkdir();
+		    }	    
+		    System.out.println("getOriginalFilename : " + profileImage.getOriginalFilename());
+		    System.out.println("getContentType : " + profileImage.getContentType());
+		    System.out.println("extension "+ FilenameUtils.getExtension(profileImage.getOriginalFilename()));
+		    System.out.println("username " + username);
+		    String extension = FilenameUtils.getExtension(profileImage.getOriginalFilename());
+			Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, username +"."+ extension);
+			//TODO si extension es diferente de jpg o png lanzar exception
+			if(Files.deleteIfExists(fileNameAndPath) || Files.deleteIfExists(Paths.get(UPLOAD_DIRECTORY, username +"."+ extensionAvaliables[1]))) {
+				System.out.println("File Deleted  "+ username);
+			}
+			Files.write(fileNameAndPath, profileImage.getBytes());
+			User user = findUserByUsername(username);
+			//TODO poner en  una constante el HOST
+			user.setProfileImageUrl("http://localhost:8081/user/profileImage/"+username);
+			User userUpdated = userRepository.save(user);
+			return userUpdated;
+
+	}
+
+	@Override
+	public byte[] getprofileImage(String username) throws IOException {
+		String extension = "jpg";
+		Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, username+"."+extension);
+		byte[] picture = Files.readAllBytes(fileNameAndPath);
+		if (picture == null) {
+			 fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, username+"."+"png");
+			 return Files.readAllBytes(fileNameAndPath);
+		}
+		return picture;
+	}
+
+	@Override
+	public User add(UserRequestDto user) throws UserNotFoundException, UsernameExistException, EmailExistException, IOException {
+		// TODO validate exists user
+		// TODO recibir identificationType and institution
+		User userSaved = register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), null,1L);
+		uploadFile(user.getUsername(), user.getProfileImage());
+		return userSaved;
+	}
+
+	@Override
+	public User update(UserRequestDto user)
+			throws UserNotFoundException, UsernameExistException, EmailExistException, IOException {
+		User userExits = findUserByUsername(user.getUsername());
+		if (userExits != null) {
+			System.out.println("User for update exists  : " + user.getUsername());
+			userExits.setFirstName(user.getFirstName());
+			userExits.setLastName(user.getLastName());
+			userExits.setUsername(user.getUsername());
+			userExits.setEmail(user.getEmail());
+			userExits.setInstitution(user.getInstitution());
+			userExits.setActive(user.isActive());
+			userExits.setNotLocked(user.isNonLocked());
+			userExits.setRole(user.getRole());
+			userExits.setAuthorities(Role.valueOf(user.getRole()).getAuthorities());
+			userExits.setProfileImageUrl(getTemporaryProfileImageUrl());
+			userExits.setIdentificationType(new IdentificationTypes(user.getIdIdentificationType()));
+			uploadFile(user.getUsername(), user.getProfileImage());
+			User userSaved = userRepository.save(userExits);
+			return userSaved;
+		}
+		return null;
+	}
 
 }
