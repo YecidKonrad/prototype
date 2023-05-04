@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -24,13 +25,17 @@ import com.prototype.domain.PhaseUser;
 import com.prototype.domain.StatePhase;
 import com.prototype.domain.User;
 import com.prototype.dto.ActivityDto;
+import com.prototype.dto.ActivityRequestDto;
 import com.prototype.dto.PhaseDto;
 import com.prototype.dto.PhaseRequestDto;
+import com.prototype.dto.StatePhaseDto;
 import com.prototype.dto.UserDto;
+import com.prototype.mapper.ActivityMapper;
 import com.prototype.mapper.PhaseMapper;
 import com.prototype.mapper.UserMapper;
 import com.prototype.repository.PhaseActivityRepository;
 import com.prototype.repository.PhaseRepository;
+import com.prototype.repository.PhaseStateRepository;
 import com.prototype.repository.PhaseUserRepository;
 import com.prototype.repository.UserRepository;
 import com.prototype.service.PhaseService;
@@ -44,17 +49,19 @@ public class PhaseServiceImpl implements PhaseService {
 	private UserRepository userRepository;
 	private ActivityServiceImpl activityServiceImpl;
 	private PhaseActivityRepository phaseActivityRepository;
+	private PhaseStateRepository phaseStateRepository;
 	JsonMapper mapper = new JsonMapper();
 
 	@Autowired
 	public PhaseServiceImpl(PhaseRepository phaseRepository, PhaseUserRepository phaseUserRepository,
-			UserRepository userRepository, ActivityServiceImpl activityServiceImpl, PhaseActivityRepository phaseActivityRepository) {
+			UserRepository userRepository, ActivityServiceImpl activityServiceImpl,
+			PhaseActivityRepository phaseActivityRepository, PhaseStateRepository phaseStateRepository) {
 		this.phaseRepository = phaseRepository;
 		this.phaseUserRepository = phaseUserRepository;
 		this.userRepository = userRepository;
 		this.activityServiceImpl = activityServiceImpl;
 		this.phaseActivityRepository = phaseActivityRepository;
-
+		this.phaseStateRepository = phaseStateRepository;
 	}
 
 	@Override
@@ -67,7 +74,7 @@ public class PhaseServiceImpl implements PhaseService {
 		phase.setOrdering(phaseRequestDto.getOrdering());
 		phase.setPhase(phaseRequestDto.getPhase());
 		phase.setStartDuration(phaseRequestDto.getStartDuration());
-		phase.setStatePhase(new StatePhase(phaseRequestDto.getIdStatePhase()));
+		phase.setStatePhase(new StatePhase(phaseRequestDto.getStatePhase().getIdStatePhase(), phaseRequestDto.getStatePhase().getState()));
 		Phase phaseSaved = phaseRepository.save(phase);
 		// TODO validate than the users of REQUETS (phaseRequestDto) exists in DB
 		Optional.ofNullable(phaseRequestDto.getUsersAsingPhase()).ifPresent(users -> users.forEach((key,value) ->
@@ -78,7 +85,7 @@ public class PhaseServiceImpl implements PhaseService {
 					phaseActivityRepository.save(new ActivityPhase(new Activity(activitySaved.getIdActivity()),
 							new Phase(phaseSaved.getIdPhase())));
 				}));
-		return new PhaseDto(phaseSaved.getIdPhase(), phaseSaved.getPhase());
+		return PhaseMapper.mapperPhaseToPhaseDto(phaseSaved);
 	}
 
 	@Override
@@ -125,7 +132,7 @@ public class PhaseServiceImpl implements PhaseService {
 			phase.get().setOrdering(phaseRequestDto.getOrdering());
 			phase.get().setPhase(phaseRequestDto.getPhase());
 			phase.get().setStartDuration(phaseRequestDto.getStartDuration());
-			phase.get().setStatePhase(new StatePhase(phaseRequestDto.getIdStatePhase()));
+			phase.get().setStatePhase(new StatePhase(phaseRequestDto.getStatePhase().getIdStatePhase(),phaseRequestDto.getStatePhase().getState()));
 			phaseRepository.save(phase.get());
 			return PhaseMapper.mapperPhaseToPhaseDto(phase.get());
 		}
@@ -182,6 +189,26 @@ public class PhaseServiceImpl implements PhaseService {
 		});
 		return usersAsignedToPhase;
 	}
+
+	@Override
+	public List<ActivityDto> addActivitiesAssinged(Long idPhase, List<ActivityRequestDto> activitiesAssinged, String userTokenHeader) {
+		List<ActivityDto> activitiesResponse = new ArrayList<>();
+		Optional.ofNullable(activitiesAssinged).ifPresent(activities ->
+		activities.forEach(activity -> {
+				ActivityDto activitySaved = activityServiceImpl.create(activity, userTokenHeader);
+				phaseActivityRepository.save(new ActivityPhase(new Activity(activitySaved.getIdActivity()),	new Phase(idPhase)));
+				activitiesResponse.add(activitySaved);
+			}));
+		return activitiesResponse;
+	}
+
+	@Override
+	public List<StatePhaseDto> getPhasesStates() {
+		return phaseStateRepository.findAll().stream()
+			.map(PhaseMapper::mapperPhaseStateToPhaseStateDto)
+			.collect(Collectors.toList());
+}
+
 	
 
 

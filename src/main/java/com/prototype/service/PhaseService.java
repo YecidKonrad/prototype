@@ -6,8 +6,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.prototype.domain.Phase;
+import com.prototype.dto.ActivityDto;
+import com.prototype.dto.ActivityRequestDto;
 import com.prototype.dto.PhaseDto;
 import com.prototype.dto.PhaseRequestDto;
+import com.prototype.dto.StatePhaseDto;
 import com.prototype.dto.UserDto;
 
 public interface PhaseService {
@@ -21,6 +24,8 @@ public interface PhaseService {
     PhaseDto update(PhaseRequestDto phaseRequestDto, Long idPhase);
     List<UserDto> usersAssinged(Long idPhase);
 	List<UserDto> assingUser(Map<String,String> usersAsingPhase, Long idPhase);
+	List<ActivityDto> addActivitiesAssinged(Long idPhase, List<ActivityRequestDto> activitiesAssinged, String userTokenHeader);
+	List<StatePhaseDto> getPhasesStates();
     
 
    

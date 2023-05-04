@@ -1,6 +1,7 @@
 package com.prototype.mapper;
 
 import com.prototype.domain.Phase;
+import com.prototype.domain.StatePhase;
 import com.prototype.dto.PhaseDto;
 import com.prototype.dto.StatePhaseDto;
 
@@ -18,6 +19,15 @@ public  class PhaseMapper {
 		phaseDto.setStartDuration(phase.getStartDuration());
 		phaseDto.setStatePhase(new StatePhaseDto(phase.getStatePhase().getIdStatePhase(), phase.getStatePhase().getState()));		
 		return phaseDto;
+	}
+	
+	
+	
+	public static StatePhaseDto mapperPhaseStateToPhaseStateDto(StatePhase statePhase) {
+		StatePhaseDto statePhaseDto = new StatePhaseDto();
+		statePhaseDto.setIdStatePhase(statePhase.getIdStatePhase());
+		statePhaseDto.setState(statePhase.getState());
+		return statePhaseDto;
 	}
 
 }

@@ -54,7 +54,6 @@ public class ActivityServiceImpl implements ActivityService {
 		System.out.println("saved Activity # " + activitySaved.getIdActivity());
 		Optional.ofNullable(activityRequestDto.getUsersAsingActivity()).ifPresent(users -> users.forEach((key, value) ->
 			activityUserRepository.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key)))));
-		//activityRequestDto.getUsersAsingActivity().forEach((key, value) -> activityUserRepository.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key))));
 		return new ActivityDto(activitySaved.getIdActivity(), activitySaved.getTittle());
 	}
 

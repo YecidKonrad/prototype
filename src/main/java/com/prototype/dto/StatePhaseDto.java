@@ -5,6 +5,10 @@ import java.io.Serializable;
 
 public class StatePhaseDto implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long idStatePhase;
 	private String state;
 		

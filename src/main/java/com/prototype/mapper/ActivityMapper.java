@@ -5,7 +5,7 @@ import com.prototype.domain.StateActivity;
 import com.prototype.dto.ActivityDto;
 
 public class ActivityMapper {
-	public static ActivityDto mapperPhaseToPhaseDto(Activity activity) {
+	public static ActivityDto mapperActivityToActivityDto(Activity activity) {
 		ActivityDto activityDto = new ActivityDto();
 		activityDto.setCreatedBy(UserMapper.mapperUserToUserDto(activity.getCreatedBy()));
 		activityDto.setCreatedDate(activity.getCreatedDate());
@@ -16,7 +16,6 @@ public class ActivityMapper {
 		activityDto.setStartDuration(activity.getStartDuration());
 		activityDto.setStateActivity(new StateActivity(activity.getStateActivity().getIdStateActivity(), activity.getStateActivity().getState()));
 		activityDto.setTittle(activity.getTittle());
-		//activityDto.setUsersasignedToActivity(activity.ge);
 		return activityDto;
 	}
 

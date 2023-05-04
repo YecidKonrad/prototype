@@ -3,10 +3,6 @@ package com.prototype.controller;
 import static com.prototype.constant.SecurityConstant.JWT_TOKEN_HEADER;
 import static org.springframework.http.HttpStatus.OK;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,19 +35,9 @@ public class PhaseController extends ExceptionHandling {
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
-	@GetMapping("/json")
-	public ResponseEntity<PhaseRequestDto> generate() {
-		PhaseRequestDto phaseRequestDto = new PhaseRequestDto();
-		Map<Long, String> doubleBraceMap = new HashMap<Long, String>() {
-			{
-				put(1L, "value1");
-				put(2L, "value2");
-			}
-		};
-		phaseRequestDto.setUsersAsingPhase(doubleBraceMap);
-		phaseRequestDto.setStartDuration(new Date());
-		phaseRequestDto.setEndDuration(new Date());
-		return new ResponseEntity<>(phaseRequestDto, OK);
+	@GetMapping("/states")
+	public ResponseEntity<?> getPhasesStates() {
+		return new ResponseEntity<>(phaseService.getPhasesStates(), OK);
 	}
 
 	@PostMapping("/create")
@@ -94,6 +80,11 @@ public class PhaseController extends ExceptionHandling {
 	
 	@GetMapping("/usersAssinged/{idPhase}")
 	public ResponseEntity<?> addUsersAssinged(@PathVariable Long idPhase) {
+		return new ResponseEntity<>(phaseService.usersAssinged(idPhase), OK);
+	}
+	
+	@GetMapping("/activitiesAssinged/{idPhase}")
+	public ResponseEntity<?> addActivitiesAssinged(@PathVariable Long idPhase) {
 		return new ResponseEntity<>(phaseService.usersAssinged(idPhase), OK);
 	}
 

@@ -18,7 +18,7 @@ public class PhaseRequestDto implements Serializable {
 	private Date endDuration;
 	private String description;
 	private int ordering;
-	private Long idStatePhase;
+	private StatePhaseDto statePhase;
 	private Map<Long, String> usersAsingPhase;
 	private User createdBy;
 	private List<ActivityRequestDto> activitiesAsingPhase;
@@ -27,20 +27,24 @@ public class PhaseRequestDto implements Serializable {
 	
 	public PhaseRequestDto() {
 	}
-	
-	
-	
+
 	public PhaseRequestDto(String phase, Date startDuration, Date endDuration, String description, int ordering,
-			Long idStatePhase, Map<Long, String> usersAsingPhase, User createdBy) {
+			StatePhaseDto statePhase, Map<Long, String> usersAsingPhase, User createdBy,
+			List<ActivityRequestDto> activitiesAsingPhase) {
 		this.phase = phase;
 		this.startDuration = startDuration;
 		this.endDuration = endDuration;
 		this.description = description;
 		this.ordering = ordering;
-		this.idStatePhase = idStatePhase;
+		this.statePhase = statePhase;
 		this.usersAsingPhase = usersAsingPhase;
 		this.createdBy = createdBy;
+		this.activitiesAsingPhase = activitiesAsingPhase;
 	}
+
+
+
+
 
 
 
@@ -74,12 +78,19 @@ public class PhaseRequestDto implements Serializable {
 	public void setOrdering(int ordering) {
 		this.ordering = ordering;
 	}
-	public Long getIdStatePhase() {
-		return idStatePhase;
+	
+	public StatePhaseDto getStatePhase() {
+		return statePhase;
 	}
-	public void setIdStatePhase(Long idStatePhase) {
-		this.idStatePhase = idStatePhase;
+
+
+
+	public void setStatePhase(StatePhaseDto statePhase) {
+		this.statePhase = statePhase;
 	}
+
+
+
 	public Map<Long, String> getUsersAsingPhase() {
 		return usersAsingPhase;
 	}
