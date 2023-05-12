@@ -77,8 +77,8 @@ public class PhaseServiceImpl implements PhaseService {
 		phase.setStatePhase(new StatePhase(phaseRequestDto.getStatePhase().getIdStatePhase(), phaseRequestDto.getStatePhase().getState()));
 		Phase phaseSaved = phaseRepository.save(phase);
 		// TODO validate than the users of REQUETS (phaseRequestDto) exists in DB
-		Optional.ofNullable(phaseRequestDto.getUsersAsingPhase()).ifPresent(users -> users.forEach((key,value) ->
-			phaseUserRepository.save(new PhaseUser(new Phase(phaseSaved.getIdPhase()), new User(key)))));
+		Optional.ofNullable(phaseRequestDto.getUsersAsignedToPhase()).ifPresent(users -> users.forEach(user ->
+			phaseUserRepository.save(new PhaseUser(new Phase(phaseSaved.getIdPhase()), new User(user.getIdUser())))));
 		Optional.ofNullable(phaseRequestDto.getActivitiesAsingPhase()).ifPresent(activities ->
 			activities.forEach(acitivity -> {
 					ActivityDto activitySaved = activityServiceImpl.create(acitivity, userTokenHeader);

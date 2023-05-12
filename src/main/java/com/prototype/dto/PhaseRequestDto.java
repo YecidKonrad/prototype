@@ -19,17 +19,14 @@ public class PhaseRequestDto implements Serializable {
 	private String description;
 	private int ordering;
 	private StatePhaseDto statePhase;
-	private Map<Long, String> usersAsingPhase;
+	private List<UserDto> usersAsignedToPhase;
 	private User createdBy;
-	private List<ActivityRequestDto> activitiesAsingPhase;
-	
-	
+	private List<ActivityRequestDto> activitiesAsingPhase;	
 	
 	public PhaseRequestDto() {
-	}
-
+	}	
 	public PhaseRequestDto(String phase, Date startDuration, Date endDuration, String description, int ordering,
-			StatePhaseDto statePhase, Map<Long, String> usersAsingPhase, User createdBy,
+			StatePhaseDto statePhase, List<UserDto> usersAsignedToPhase, User createdBy,
 			List<ActivityRequestDto> activitiesAsingPhase) {
 		this.phase = phase;
 		this.startDuration = startDuration;
@@ -37,16 +34,11 @@ public class PhaseRequestDto implements Serializable {
 		this.description = description;
 		this.ordering = ordering;
 		this.statePhase = statePhase;
-		this.usersAsingPhase = usersAsingPhase;
+		this.usersAsignedToPhase = usersAsignedToPhase;
 		this.createdBy = createdBy;
 		this.activitiesAsingPhase = activitiesAsingPhase;
 	}
-
-
-
-
-
-
+	
 
 	public String getPhase() {
 		return phase;
@@ -83,19 +75,8 @@ public class PhaseRequestDto implements Serializable {
 		return statePhase;
 	}
 
-
-
 	public void setStatePhase(StatePhaseDto statePhase) {
 		this.statePhase = statePhase;
-	}
-
-
-
-	public Map<Long, String> getUsersAsingPhase() {
-		return usersAsingPhase;
-	}
-	public void setUsersAsingPhase(Map<Long, String> usersAsingPhase) {
-		this.usersAsingPhase = usersAsingPhase;
 	}
 
 	public User getCreatedBy() {
@@ -113,6 +94,10 @@ public class PhaseRequestDto implements Serializable {
 	public void setActivitiesAsingPhase(List<ActivityRequestDto> activitiesAsingPhase) {
 		this.activitiesAsingPhase = activitiesAsingPhase;
 	}
-	
-	
+	public List<UserDto> getUsersAsignedToPhase() {
+		return usersAsignedToPhase;
+	}
+	public void setUsersAsignedToPhase(List<UserDto> usersAsignedToPhase) {
+		this.usersAsignedToPhase = usersAsignedToPhase;
+	}
 }

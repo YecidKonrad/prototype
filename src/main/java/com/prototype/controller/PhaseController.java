@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.prototype.dto.PhaseDto;
 import com.prototype.dto.PhaseRequestDto;
 import com.prototype.exception.ExceptionHandling;
@@ -43,6 +45,13 @@ public class PhaseController extends ExceptionHandling {
 	@PostMapping("/create")
 	public ResponseEntity<PhaseDto> create(@RequestHeader(JWT_TOKEN_HEADER) String tokenHeader,
 			@RequestBody PhaseRequestDto phaseRequest) {
+		JsonMapper mapper = new JsonMapper();
+		try {
+			System.out.println(mapper.writeValueAsString(phaseRequest));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		PhaseDto responsePhase = phaseService.create(phaseRequest, jwtTokenProvider.getSubject(tokenHeader));
 		return new ResponseEntity<>(responsePhase, OK);
 	}
