@@ -15,6 +15,7 @@ import com.prototype.domain.ActivityUser;
 import com.prototype.domain.StateActivity;
 import com.prototype.domain.User;
 import com.prototype.dto.ActivityRequestDto;
+import com.prototype.mapper.ActivityMapper;
 import com.prototype.dto.ActivityDto;
 import com.prototype.repository.ActivityRepository;
 import com.prototype.repository.ActivityUserRepository;
@@ -54,7 +55,7 @@ public class ActivityServiceImpl implements ActivityService {
 		System.out.println("saved Activity # " + activitySaved.getIdActivity());
 		Optional.ofNullable(activityRequestDto.getUsersAsingActivity()).ifPresent(users -> users.forEach((key, value) ->
 			activityUserRepository.save(new ActivityUser(new Activity(activitySaved.getIdActivity()), new User(key)))));
-		return new ActivityDto(activitySaved.getIdActivity(), activitySaved.getTittle());
+		return ActivityMapper.mapperActivityToActivityDto(activitySaved);
 	}
 
 

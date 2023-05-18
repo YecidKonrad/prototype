@@ -64,7 +64,7 @@ public class UserController extends ExceptionHandling {
 	public ResponseEntity<User> register(@RequestBody UserRequestDto user)
 			throws UserNotFoundException, UsernameExistException, EmailExistException {
 		User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername(),
-				user.getEmail(), user.getInstitution(), user.getIdIdentificationType());
+				user.getEmail(), user.getInstitution(), user.getIdentificationType());
 		return new ResponseEntity<>(newUser, OK);
 	}
 	

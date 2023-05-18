@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -35,12 +36,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.prototype.domain.IdentificationTypes;
 import com.prototype.domain.User;
 import com.prototype.domain.UserPrincipal;
+import com.prototype.dto.IdentificationTypesDto;
 import com.prototype.dto.UserRequestDto;
 import com.prototype.enumeration.Role;
 import com.prototype.exception.domain.EmailExistException;
 import com.prototype.exception.domain.UserNotFoundException;
 import com.prototype.exception.domain.UsernameExistException;
 import com.prototype.mapper.UserMapper;
+import com.prototype.repository.IdentificationTypesRepository;
 import com.prototype.repository.UserRepository;
 import com.prototype.service.UserService;
 
@@ -50,6 +53,7 @@ import com.prototype.service.UserService;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
     private UserRepository userRepository;
+    private IdentificationTypesRepository identificationTypesRepository;
     private BCryptPasswordEncoder passwordEncoder;
     public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
 
@@ -76,7 +80,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User register(String firstName, String lastName, String username, String email, String institution,Long idIdentificationType) throws UserNotFoundException, UsernameExistException, EmailExistException {
+    public User register(String firstName, String lastName, String username, String email, String institution, Long identificationType) throws UserNotFoundException, UsernameExistException, EmailExistException {
         validateNewUsernameAndEmail(EMPTY, username, email);
         User user = new User();
         user.setUserId(generateUserId());
@@ -93,8 +97,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setNotLocked(true);
         user.setRole(ROLE_SUPER_ADMIN.name());
         user.setAuthorities(ROLE_SUPER_ADMIN.getAuthorities());
-        user.setProfileImageUrl(getTemporaryProfileImageUrl());
-        user.setIdentificationType(new IdentificationTypes(idIdentificationType));
+        user.setProfileImageUrl(getTemporaryProfileImageUrl()+username+"svg" );
+        user.setIdentificationType(new IdentificationTypes(identificationType));
         User userSaved = userRepository.save(user);
         LOGGER.info("New user password: " + password);
         return userSaved;
@@ -117,7 +121,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private String getTemporaryProfileImageUrl() {
       //  return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH).toUriString();
-    	return "https://xsgames.co/randomusers/avatar.php?g=pixel";
+    	return "https://api.multiavatar.com/";
     }
 
     private String encodePassword(String password) {
@@ -198,9 +202,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public User add(UserRequestDto user) throws UserNotFoundException, UsernameExistException, EmailExistException, IOException {
-		// TODO validate exists user
-		// TODO recibir identificationType and institution
-		User userSaved = register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), null,1L);
+
+		User userSaved = register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), null, user.getIdentificationType());
 		uploadFile(user.getUsername(), user.getProfileImage());
 		return userSaved;
 	}
@@ -220,9 +223,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			userExits.setNotLocked(user.isNonLocked());
 			userExits.setRole(user.getRole());
 			userExits.setAuthorities(Role.valueOf(user.getRole()).getAuthorities());
-			userExits.setProfileImageUrl(getTemporaryProfileImageUrl());
-			userExits.setIdentificationType(new IdentificationTypes(user.getIdIdentificationType()));
-			uploadFile(user.getUsername(), user.getProfileImage());
+		//	userExits.setProfileImageUrl(getTemporaryProfileImageUrl());
+			userExits.setIdentificationType(new IdentificationTypes(user.getIdentificationType()));
+			//uploadFile(user.getUsername(), user.getProfileImage());
 			User userSaved = userRepository.save(userExits);
 			return userSaved;
 		}

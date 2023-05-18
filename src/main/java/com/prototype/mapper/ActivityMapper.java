@@ -3,6 +3,7 @@ package com.prototype.mapper;
 import com.prototype.domain.Activity;
 import com.prototype.domain.StateActivity;
 import com.prototype.dto.ActivityDto;
+import com.prototype.dto.StateActivityDto;
 
 public class ActivityMapper {
 	public static ActivityDto mapperActivityToActivityDto(Activity activity) {
@@ -14,7 +15,7 @@ public class ActivityMapper {
 		activityDto.setIdActivity(activity.getIdActivity());
 		activityDto.setPriority(activity.getPriority());
 		activityDto.setStartDuration(activity.getStartDuration());
-		activityDto.setStateActivity(new StateActivity(activity.getStateActivity().getIdStateActivity(), activity.getStateActivity().getState()));
+		activityDto.setStateActivityDto(new StateActivityDto(activity.getStateActivity().getIdStateActivity(), activity.getStateActivity().getState()));
 		activityDto.setTittle(activity.getTittle());
 		return activityDto;
 	}

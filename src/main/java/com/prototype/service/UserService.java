@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.prototype.domain.User;
+import com.prototype.dto.IdentificationTypesDto;
 import com.prototype.dto.UserRequestDto;
 import com.prototype.exception.domain.EmailExistException;
 import com.prototype.exception.domain.UserNotFoundException;
@@ -13,7 +14,7 @@ import com.prototype.exception.domain.UsernameExistException;
 
 public interface UserService {
 
-    User register(String firstName, String lastName, String username, String email, String institution, Long idIdentificationType) throws UserNotFoundException, UsernameExistException, EmailExistException;
+    User register(String firstName, String lastName, String username, String email, String institution, Long identificationType) throws UserNotFoundException, UsernameExistException, EmailExistException;
     
     User add (UserRequestDto user) throws UserNotFoundException, UsernameExistException, EmailExistException, IOException;;
    

@@ -17,5 +17,5 @@ public class SecurityConstant {
     public static final String[] PUBLIC_URLS = {"/swagger-ui.html","/user/*", "/user/*/*", 
     		/*"/user/login", "/user/register",*/
     	"/user/resetpassword/**", "/user/image/**", 
-    	"/phase/*" ,"/phase/*/*","/activity/*", "/activity/*/*" };
+    	"/phase/*" ,"/phase/*/*","/activity/*", "/activity/*/*", "/identifications-types/types" };
 }

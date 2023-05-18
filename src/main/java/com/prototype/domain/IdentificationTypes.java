@@ -11,8 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class IdentificationTypes implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
@@ -21,6 +25,7 @@ public class IdentificationTypes implements Serializable{
 	private String name;
 	@ManyToOne()
 	@JoinColumn(name = "id_country", nullable = false, foreignKey = @ForeignKey(name = "fk_identification_country"))
+	@JsonIgnore
 	private Countries country;
 	
 

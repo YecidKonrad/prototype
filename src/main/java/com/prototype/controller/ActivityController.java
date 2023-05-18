@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import com.prototype.service.ActivityService;
 import com.prototype.utility.JWTTokenProvider;
 
 @RestController
+@CrossOrigin(origins = "*", exposedHeaders = {JWT_TOKEN_HEADER})
 @RequestMapping(path = { "/activity" })
 public class ActivityController extends ExceptionHandling {
 	

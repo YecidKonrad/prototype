@@ -10,9 +10,9 @@ INSERT INTO acceso.state_activity (state) VALUES ('En ejecución');
 INSERT INTO acceso.state_activity (state) VALUES ('Por ejecutar');
 INSERT INTO acceso.state_activity (state) VALUES ('Finalizada');
 
-INSERT INTO acceso.user (email,first_name,institution,is_active,is_not_locked,join_date, last_name,`password`,user_id,`username`,id_identification_type) VALUES ('allinas@yopmail.com', 'Andres','Millonarios F.C', 1,1,'2023-04-13 02:21:29.655000', 'Llinas','3','C3NTR4L','allinas',1 );
-INSERT INTO acceso.user (email,first_name,institution,is_active,is_not_locked,join_date, last_name,`password`,user_id,`username`,id_identification_type) VALUES ('agamero@yopmail.com', 'Alberto','Millonarios F.C', 1,1,'2023-04-13 02:21:29.655000','agamero','3','T3CN1C0','agamero',1 );
-INSERT INTO acceso.user (email,first_name,institution,is_active,is_not_locked,join_date, last_name,`password`,user_id,`username`,id_identification_type) VALUES ('dmckallister@yopmail.com', 'David','Millonarios F.C', 1,1,'2023-04-13 02:21:29.655000','Mckallister','3','V0L4NT3','dmckallister',1 );
+INSERT INTO acceso.user (email,first_name,institution,is_active,is_not_locked,join_date, last_name,`password`, profile_image_url,user_id,`username`,id_identification_type) VALUES ('allinas@yopmail.com', 'Andres','Millonarios F.C', 1,1,'2023-04-13 02:21:29.655000', 'Llinas','3', 'https://api.multiavatar.com/1.svg','C3NTR4L','allinas',1 );
+INSERT INTO acceso.user (email,first_name,institution,is_active,is_not_locked,join_date, last_name,`password`,profile_image_url,user_id,`username`,id_identification_type) VALUES ('agamero@yopmail.com', 'Alberto','Millonarios F.C', 1,1,'2023-04-13 02:21:29.655000','agamero','3','https://api.multiavatar.com/2.svg','T3CN1C0','agamero',1 );
+INSERT INTO acceso.user (email,first_name,institution,is_active,is_not_locked,join_date, last_name,`password`,profile_image_url,user_id,`username`,id_identification_type) VALUES ('dmckallister@yopmail.com', 'David','Millonarios F.C', 1,1,'2023-04-13 02:21:29.655000','Mckallister','3','https://api.multiavatar.com/3.svg','V0L4NT3','dmckallister',1 );
 
 INSERT INTO acceso.phases(created_date,`description`,end_duration,ordering,`phase`,start_duration,created_by,id_state_phase) VALUES (now(), 'fase inicial',  now()+ interval 10 day, 1, 'fase inicial', now(), 2,1);
 INSERT INTO acceso.phases(created_date,`description`,end_duration,ordering,`phase`,start_duration,created_by,id_state_phase) VALUES (now(), 'fase segunda',  now()+ interval 20 day, 2, 'fase segunda', now(), 2,1);
