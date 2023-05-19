@@ -5,11 +5,15 @@ import java.util.List;
 import com.prototype.domain.Activity;
 import com.prototype.dto.ActivityDto;
 import com.prototype.dto.ActivityRequestDto;
+import com.prototype.dto.StateActivityDto;
 
 public interface ActivityService {
 
 	ActivityDto create(ActivityRequestDto activityRequestDto, String userTokenHeder);
 
-	List<Activity> getActivities();
-   
+	public List<Activity> getActivities();
+
+	public List<ActivityDto> getAllActivitiesDetails();
+	public List<StateActivityDto> getStateActivities();
+
 }

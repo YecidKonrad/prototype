@@ -11,13 +11,13 @@ public class ActivityDto {
 	private Date endDuration;
 	private Date createdDate;
 	private int priority;
-	private StateActivityDto stateActivityDto;
+	private StateActivityDto stateActivity;
 	private UserDto createdBy;
-	private List<UserDto> UsersasignedToActivity;
+	private List<UserDto> usersAsignedToActivity;
 	
 	public ActivityDto(Long idActivity, String tittle, String description, Date startDuration, Date endDuration,
-			Date createdDate, int priority, StateActivityDto stateActivityDto, UserDto createdBy,
-			List<UserDto> usersasignedToActivity) {
+			Date createdDate, int priority, StateActivityDto stateActivity, UserDto createdBy,
+			List<UserDto> usersAsignedToActivity) {
 		this.idActivity = idActivity;
 		this.tittle = tittle;
 		this.description = description;
@@ -25,9 +25,9 @@ public class ActivityDto {
 		this.endDuration = endDuration;
 		this.createdDate = createdDate;
 		this.priority = priority;
-		this.stateActivityDto = stateActivityDto;
+		this.stateActivity = stateActivity;
 		this.createdBy = createdBy;
-		UsersasignedToActivity = usersasignedToActivity;
+		this.usersAsignedToActivity = usersAsignedToActivity;
 	}
 
 	public ActivityDto() {
@@ -89,12 +89,12 @@ public class ActivityDto {
 		this.priority = priority;
 	}
 
-	public StateActivityDto getStateActivityDto() {
-		return stateActivityDto;
+	public StateActivityDto getStateActivity() {
+		return stateActivity;
 	}
 
-	public void setStateActivityDto(StateActivityDto stateActivityDto) {
-		this.stateActivityDto = stateActivityDto;
+	public void setStateActivity(StateActivityDto stateActivity) {
+		this.stateActivity = stateActivity;
 	}
 
 	public UserDto getCreatedBy() {
@@ -105,13 +105,15 @@ public class ActivityDto {
 		this.createdBy = createdBy;
 	}
 
-	public List<UserDto> getUsersasignedToActivity() {
-		return UsersasignedToActivity;
+	public List<UserDto> getUsersAsignedToActivity() {
+		return usersAsignedToActivity;
 	}
 
-	public void setUsersasignedToActivity(List<UserDto> usersasignedToActivity) {
-		UsersasignedToActivity = usersasignedToActivity;
+	public void setUsersAsignedToActivity(List<UserDto> usersAsignedToActivity) {
+		this.usersAsignedToActivity = usersAsignedToActivity;
 	}
+
+	
 	
 	
 

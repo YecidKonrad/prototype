@@ -47,7 +47,12 @@ public class ActivityController extends ExceptionHandling {
 	
 	@GetMapping("/activities")
 	public ResponseEntity<?> getActivities(){
-		return new ResponseEntity<>(activityService.getActivities(), OK);
+		return new ResponseEntity<>(activityService.getAllActivitiesDetails(), OK);
+	}
+	
+	@GetMapping("/states")
+	public ResponseEntity<?> getPhasesStates() {
+		return new ResponseEntity<>(activityService.getStateActivities(), OK);
 	}
 	//TODO obtener detalle de actividades
 	//TODO obtener actividad Detalle por ID
