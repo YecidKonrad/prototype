@@ -33,6 +33,8 @@ import com.prototype.dto.UserDto;
 import com.prototype.mapper.ActivityMapper;
 import com.prototype.mapper.PhaseMapper;
 import com.prototype.mapper.UserMapper;
+import com.prototype.repository.ActivityPhaseRepository;
+import com.prototype.repository.ActivityRepository;
 import com.prototype.repository.PhaseActivityRepository;
 import com.prototype.repository.PhaseRepository;
 import com.prototype.repository.PhaseStateRepository;
@@ -50,18 +52,22 @@ public class PhaseServiceImpl implements PhaseService {
 	private ActivityServiceImpl activityServiceImpl;
 	private PhaseActivityRepository phaseActivityRepository;
 	private PhaseStateRepository phaseStateRepository;
+	private ActivityPhaseRepository activityPhaseRepository;
+	private ActivityRepository activityRepository;
 	JsonMapper mapper = new JsonMapper();
 
 	@Autowired
 	public PhaseServiceImpl(PhaseRepository phaseRepository, PhaseUserRepository phaseUserRepository,
 			UserRepository userRepository, ActivityServiceImpl activityServiceImpl,
-			PhaseActivityRepository phaseActivityRepository, PhaseStateRepository phaseStateRepository) {
+			PhaseActivityRepository phaseActivityRepository, PhaseStateRepository phaseStateRepository,
+			ActivityPhaseRepository activityPhaseRepository) {
 		this.phaseRepository = phaseRepository;
 		this.phaseUserRepository = phaseUserRepository;
 		this.userRepository = userRepository;
 		this.activityServiceImpl = activityServiceImpl;
 		this.phaseActivityRepository = phaseActivityRepository;
 		this.phaseStateRepository = phaseStateRepository;
+		this.activityPhaseRepository = activityPhaseRepository;
 	}
 
 	@Override
@@ -81,9 +87,8 @@ public class PhaseServiceImpl implements PhaseService {
 			phaseUserRepository.save(new PhaseUser(new Phase(phaseSaved.getIdPhase()), new User(user.getIdUser())))));
 		Optional.ofNullable(phaseRequestDto.getActivitiesAsingPhase()).ifPresent(activities ->
 			activities.forEach(acitivity -> {
-					ActivityDto activitySaved = activityServiceImpl.create(acitivity, userTokenHeader);
-					phaseActivityRepository.save(new ActivityPhase(new Activity(activitySaved.getIdActivity()),
-							new Phase(phaseSaved.getIdPhase())));
+					//ActivityDto activitySaved = activityServiceImpl.create(acitivity, userTokenHeader);
+					phaseActivityRepository.save(new ActivityPhase(new Activity(acitivity.getIdActivity()),	new Phase(phaseSaved.getIdPhase())));
 				}));
 		return PhaseMapper.mapperPhaseToPhaseDto(phaseSaved);
 	}
@@ -102,6 +107,7 @@ public class PhaseServiceImpl implements PhaseService {
 			PhaseDto phaseResponseDto = PhaseMapper.mapperPhaseToPhaseDto(phase);
 			List<UserDto> usersAsignedToPhase = findPhaseUserByPhase(phase.getIdPhase());
 			phaseResponseDto.setUsersAsignedToPhase(usersAsignedToPhase);
+			phaseResponseDto.setActivitiesAsingPhase(findActivityPhaseByPhase(phase.getIdPhase()));
 			phasesResponse.add(phaseResponseDto);
 		}
 		return phasesResponse;
@@ -117,6 +123,7 @@ public class PhaseServiceImpl implements PhaseService {
 		Phase phase = phaseRepository.findById(idPhase).orElse(null);
 		PhaseDto phaseResponseDto = PhaseMapper.mapperPhaseToPhaseDto(phase);
 		phaseResponseDto.setUsersAsignedToPhase(findPhaseUserByPhase(phase.getIdPhase()));
+		phaseResponseDto.setActivitiesAsingPhase(findActivityPhaseByPhase(phase.getIdPhase()));
 		return phaseResponseDto;
 	}
 
@@ -188,6 +195,14 @@ public class PhaseServiceImpl implements PhaseService {
 			usersAsignedToPhase.add(UserMapper.mapperUserToUserDto(userAsigned));
 		});
 		return usersAsignedToPhase;
+	}
+	
+	public List<ActivityDto> findActivityPhaseByPhase(Long idPhase) {
+		List<ActivityDto> activitiesAsignedToPhase = new ArrayList<>();
+		activityPhaseRepository.findActivityPhaseByPhase(new Phase(idPhase)).forEach((ah) -> {
+			activitiesAsignedToPhase.add(ActivityMapper.mapperActivityToActivityDto(ah.getActivity()));
+		});		
+		return activitiesAsignedToPhase;
 	}
 
 	@Override

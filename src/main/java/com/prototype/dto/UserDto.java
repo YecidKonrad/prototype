@@ -14,12 +14,12 @@ public class UserDto implements Serializable{
 	    private String username;
 	    private String email;
 	    private String institution;
-	    private boolean isActive;
-	    
-	    
-	    
-		public UserDto(String userId, String firstName, String lastName, String username, String email,
+	    private boolean isActive;   
+	    	
+		
+		public UserDto(Long idUser, String userId, String firstName, String lastName, String username, String email,
 				String institution, boolean isActive) {
+			this.idUser = idUser;
 			this.userId = userId;
 			this.firstName = firstName;
 			this.lastName = lastName;
@@ -27,8 +27,8 @@ public class UserDto implements Serializable{
 			this.email = email;
 			this.institution = institution;
 			this.isActive = isActive;
-		}		
-		
+		}
+
 		public UserDto() {
 
 		}

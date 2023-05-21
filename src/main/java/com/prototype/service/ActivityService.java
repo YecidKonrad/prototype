@@ -9,11 +9,10 @@ import com.prototype.dto.StateActivityDto;
 
 public interface ActivityService {
 
-	ActivityDto create(ActivityRequestDto activityRequestDto, String userTokenHeder);
-
+	public ActivityDto create(ActivityRequestDto activityRequestDto, String userTokenHeder);
 	public List<Activity> getActivities();
-
 	public List<ActivityDto> getAllActivitiesDetails();
 	public List<StateActivityDto> getStateActivities();
+	public ActivityDto update(ActivityRequestDto activityRequestDto, String userTokenHeder);
 
 }

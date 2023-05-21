@@ -12,6 +12,7 @@ public class ActivityRequestDto implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Long idActivity;
 	private String tittle;
 	private String description;
 	private Date startDuration;
@@ -23,9 +24,10 @@ public class ActivityRequestDto implements Serializable{
 	private StateActivityDto stateActivity;
 	
 	
-
-	public ActivityRequestDto(String tittle, String description, Date startDuration, Date endDuration, Date createdDate,
-			int priority, List<UserDto> usersAsignedToActivity, User createdBy, StateActivityDto stateActivity) {
+	public ActivityRequestDto(Long idActivity, String tittle, String description, Date startDuration, Date endDuration,
+			Date createdDate, int priority, List<UserDto> usersAsignedToActivity, User createdBy,
+			StateActivityDto stateActivity) {
+		this.idActivity = idActivity;
 		this.tittle = tittle;
 		this.description = description;
 		this.startDuration = startDuration;
@@ -93,10 +95,12 @@ public class ActivityRequestDto implements Serializable{
 	public void setStateActivity(StateActivityDto stateActivity) {
 		this.stateActivity = stateActivity;
 	}
+	public Long getIdActivity() {
+		return idActivity;
+	}
+	public void setIdActivity(Long idActivity) {
+		this.idActivity = idActivity;
+	}
 
-	
-	
-	
-	
 
 }

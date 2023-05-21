@@ -18,6 +18,7 @@ import com.prototype.domain.ActivityUser;
 import com.prototype.domain.Phase;
 import com.prototype.domain.StateActivity;
 import com.prototype.domain.User;
+import com.prototype.domain.UserActivityKey;
 import com.prototype.dto.ActivityRequestDto;
 import com.prototype.dto.PhaseDto;
 import com.prototype.dto.StateActivityDto;
@@ -90,12 +91,12 @@ public class ActivityServiceImpl implements ActivityService {
 	
 	// AUXILIAR METHOD
 		public List<UserDto> findActivityUserByActivity(Long idActivity) {
-			List<UserDto> usersAsignedToPhase = new ArrayList<>();
+			List<UserDto> usersAsignedToActivity = new ArrayList<>();
 			activityUserRepository.findActivityUserByActivity(new Activity(idActivity)).forEach((ac) -> {
 				User userAsigned = userRepository.findByUsername(ac.getUser().getUsername());
-				usersAsignedToPhase.add(UserMapper.mapperUserToUserDto(userAsigned));
+				usersAsignedToActivity.add(UserMapper.mapperUserToUserDto(userAsigned));
 			});
-			return usersAsignedToPhase;
+			return usersAsignedToActivity;
 		}
 
 
@@ -104,6 +105,30 @@ public class ActivityServiceImpl implements ActivityService {
 			return activityStateRepository.findAll().stream()
 					.map(ActivityMapper::mapperActivityStateToActivityStateDto)
 					.collect(Collectors.toList());
+		}
+
+
+		@Override
+		public ActivityDto update(ActivityRequestDto activityRequestDto, String userTokenHeder) {
+			Activity activity = new Activity();
+			activity.setIdActivity(activityRequestDto.getIdActivity());
+			activity.setCreatedBy(userRepository.findByUsername(userTokenHeder));
+			activity.setCreatedDate(new Date());
+			activity.setDescription(activityRequestDto.getDescription());
+			activity.setEndDuration(activityRequestDto.getEndDuration());
+			activity.setPriority(activityRequestDto.getPriority());
+			activity.setStartDuration(activityRequestDto.getStartDuration());
+			activity.setStateActivity(new StateActivity(activityRequestDto.getStateActivity().getIdStateActivity()));
+			activity.setTittle(activityRequestDto.getTittle());
+			Activity activityUpdated = activityRepository.save(activity);
+			System.out.println("update Activity # " + activityUpdated.getIdActivity());
+			/*Optional.ofNullable(activityRequestDto.getUsersAsignedToActivity()).ifPresent(users -> users.forEach((user) ->{
+			Optional<ActivityUser>  activityUser = activityUserRepository.findById(new UserActivityKey(activityUpdated.getIdActivity(), user.getIdUser()));
+				if (!activityUser.isPresent()) {
+					activityUserRepository.save(new ActivityUser(new Activity(activityUpdated.getIdActivity()),	new User(user.getIdUser())));
+				}
+				}));*/
+			return ActivityMapper.mapperActivityToActivityDto(activityUpdated);
 		}
 
 }

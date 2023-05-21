@@ -46,11 +46,7 @@ public class Activity implements Serializable{
 	
 	@OneToMany(mappedBy = "phase")
 	@JsonIgnore
-	private Set<ActivityPhase> phases;
-
-	
-	
-	
+	private Set<ActivityPhase> phases;	
 	
 	public Activity(Long idActivity) {
 		this.idActivity = idActivity;

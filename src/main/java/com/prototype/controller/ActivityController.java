@@ -44,6 +44,11 @@ public class ActivityController extends ExceptionHandling {
 		ActivityDto activityResponseDto = activityService.create(activityRequestDto, jwtTokenProvider.getSubject(tokenHeader));
 		return new ResponseEntity<>(activityResponseDto, OK);
 	}
+	@PostMapping("/update")
+	public ResponseEntity<ActivityDto> update(@RequestHeader(JWT_TOKEN_HEADER) String tokenHeader, @RequestBody ActivityRequestDto activityRequestDto) {
+		ActivityDto activityResponseDto = activityService.update(activityRequestDto, jwtTokenProvider.getSubject(tokenHeader));
+		return new ResponseEntity<>(activityResponseDto, OK);
+	}
 	
 	@GetMapping("/activities")
 	public ResponseEntity<?> getActivities(){

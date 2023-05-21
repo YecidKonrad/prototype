@@ -16,6 +16,14 @@ public class UserActivityKey implements Serializable {
 	@Column(name = "id_activity")
 	private Long idActivity;
 
+	public UserActivityKey(Long idUser, Long idActivity) {
+		this.idUser = idUser;
+		this.idActivity = idActivity;
+	}
+
+	public UserActivityKey() {
+	}
+
 	public Long getIdUser() {
 		return idUser;
 	}
