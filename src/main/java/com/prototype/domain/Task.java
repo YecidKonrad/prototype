@@ -18,117 +18,120 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="Activities")
-public class Activity implements Serializable{
+@Table(name="tasks")
+public class Task implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
-	private Long idActivity;
+	private Long idTask;
 	private String tittle;
 	private String description;
 	private Date startDuration;
 	private Date endDuration;
 	private Date createdDate;
-	private int priority;
 	@ManyToOne
-	@JoinColumn(name = "id_state_activity", nullable = false, foreignKey = @ForeignKey(name = "fk_activity_state_activity"))
-	private StateActivity stateActivity;
+	@JoinColumn(name = "id_state_task", nullable = false, foreignKey = @ForeignKey(name = "fk_task_state_task"))
+	private StateTask stateTask;
 	@ManyToOne
 	@JsonIgnore
-	@JoinColumn(name = "created_by", nullable = false, foreignKey = @ForeignKey(name = "fk_activity_user"))
+	@JoinColumn(name = "created_by", nullable = false, foreignKey = @ForeignKey(name = "fk_task_user"))
 	private User createdBy;
-
+	
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
-	private Set<ActivityUser> usuarios;
+	private Set<TaskUser> usuarios;
 	
-	@OneToMany(mappedBy = "phase")
+	@OneToMany(mappedBy = "activity")
 	@JsonIgnore
-	private Set<ActivityPhase> phases;
+	private Set<TaskActivity> activities;	
 	
-	@OneToMany(mappedBy = "task")
-	@JsonIgnore
-	private Set<TaskActivity> tasks;	
-	
-	public Activity(Long idActivity) {
-		this.idActivity = idActivity;
-	}
-	
-	public Activity() {
+	public Task() {
 	}
 
-
-
-	public Long getIdActivity() {
-		return idActivity;
+	public Task(Long idTask, String tittle, String description, Date startDuration, Date endDuration, Date createdDate,
+			StateTask stateTask, User createdBy) {
+		this.idTask = idTask;
+		this.tittle = tittle;
+		this.description = description;
+		this.startDuration = startDuration;
+		this.endDuration = endDuration;
+		this.createdDate = createdDate;
+		this.stateTask = stateTask;
+		this.createdBy = createdBy;
 	}
-	public void setIdActivity(Long idActivity) {
-		this.idActivity = idActivity;
+
+	
+
+	public Task(Long idTask) {
+		this.idTask = idTask;
 	}
+
+	public Long getIdTask() {
+		return idTask;
+	}
+
+	public void setIdTask(Long idTask) {
+		this.idTask = idTask;
+	}
+
 	public String getTittle() {
 		return tittle;
 	}
+
 	public void setTittle(String tittle) {
 		this.tittle = tittle;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public Date getStartDuration() {
 		return startDuration;
 	}
+
 	public void setStartDuration(Date startDuration) {
 		this.startDuration = startDuration;
 	}
+
 	public Date getEndDuration() {
 		return endDuration;
 	}
+
 	public void setEndDuration(Date endDuration) {
 		this.endDuration = endDuration;
 	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
+
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	public int getPriority() {
-		return priority;
+
+	public StateTask getStateTask() {
+		return stateTask;
 	}
-	public void setPriority(int priority) {
-		this.priority = priority;
+
+	public void setStateTask(StateTask stateTask) {
+		this.stateTask = stateTask;
 	}
-	public StateActivity getStateActivity() {
-		return stateActivity;
-	}
-	public void setStateActivity(StateActivity stateActivity) {
-		this.stateActivity = stateActivity;
-	}
+
 	public User getCreatedBy() {
 		return createdBy;
 	}
+
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public Set<ActivityUser> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(Set<ActivityUser> usuarios) {
-		this.usuarios = usuarios;
-	}
-
-
-
-
-	
-	
-	
+		
 	
 }

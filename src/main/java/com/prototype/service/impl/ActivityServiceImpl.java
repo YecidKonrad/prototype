@@ -15,18 +15,14 @@ import org.springframework.stereotype.Service;
 
 import com.prototype.domain.Activity;
 import com.prototype.domain.ActivityUser;
-import com.prototype.domain.Phase;
 import com.prototype.domain.StateActivity;
 import com.prototype.domain.User;
-import com.prototype.domain.UserActivityKey;
+import com.prototype.dto.ActivityDto;
 import com.prototype.dto.ActivityRequestDto;
-import com.prototype.dto.PhaseDto;
 import com.prototype.dto.StateActivityDto;
 import com.prototype.dto.UserDto;
 import com.prototype.mapper.ActivityMapper;
-import com.prototype.mapper.PhaseMapper;
 import com.prototype.mapper.UserMapper;
-import com.prototype.dto.ActivityDto;
 import com.prototype.repository.ActivityRepository;
 import com.prototype.repository.ActivityStateRepository;
 import com.prototype.repository.ActivityUserRepository;
@@ -35,7 +31,6 @@ import com.prototype.service.ActivityService;
 
 @Service
 @Transactional
-//@Qualifier("activityDetailsService")
 public class ActivityServiceImpl implements ActivityService {
 	private Logger LOGGER = LoggerFactory.getLogger(getClass());
 	private ActivityRepository activityRepository;

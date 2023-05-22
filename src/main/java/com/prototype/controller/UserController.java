@@ -34,9 +34,12 @@ import com.prototype.exception.domain.UsernameExistException;
 import com.prototype.service.UserService;
 import com.prototype.utility.JWTTokenProvider;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @CrossOrigin(origins = "*", exposedHeaders = {JWT_TOKEN_HEADER})
 @RequestMapping(path = { "/", "/user" })
+@Api
 public class UserController extends ExceptionHandling {
 	private AuthenticationManager authenticationManager;
 	private UserService userService;
