@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.prototype.domain.Task;
 import com.prototype.domain.TaskUser;
+import com.prototype.domain.UserTaskKey;
 
-public interface TaskUserRepository extends JpaRepository<TaskUser, TaskUserRepository> {
+public interface TaskUserRepository extends JpaRepository<TaskUser, UserTaskKey> {
 
 	public List<TaskUser> findTaskUserByTask(Task task);
 }

@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -36,16 +35,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.prototype.domain.IdentificationTypes;
 import com.prototype.domain.User;
 import com.prototype.domain.UserPrincipal;
-import com.prototype.dto.IdentificationTypesDto;
+import com.prototype.dto.EmailDetails;
 import com.prototype.dto.UserRequestDto;
 import com.prototype.enumeration.Role;
 import com.prototype.exception.domain.EmailExistException;
 import com.prototype.exception.domain.UserNotFoundException;
 import com.prototype.exception.domain.UsernameExistException;
-import com.prototype.mapper.UserMapper;
 import com.prototype.repository.IdentificationTypesRepository;
 import com.prototype.repository.UserRepository;
+import com.prototype.service.EmailService;
 import com.prototype.service.UserService;
+import com.prototype.utility.MailTemplate;
 
 @Service
 @Transactional
@@ -56,13 +56,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private IdentificationTypesRepository identificationTypesRepository;
     private BCryptPasswordEncoder passwordEncoder;
     public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
+    private EmailService emailService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
-
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -101,6 +103,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setIdentificationType(new IdentificationTypes(identificationType));
         User userSaved = userRepository.save(user);
         LOGGER.info("New user password: " + password);
+        EmailDetails details = new EmailDetails();
+        details.setRecipient(userSaved.getEmail());
+        details.setSubject("Welcome " + firstName + password);
+        details.setMsgBody(MailTemplate.getTemplate());
+        String status = emailService.sendSimpleMail(details);
+        LOGGER.info(status);
         return userSaved;
     }
 

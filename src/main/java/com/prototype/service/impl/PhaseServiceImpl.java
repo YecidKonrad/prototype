@@ -80,15 +80,17 @@ public class PhaseServiceImpl implements PhaseService {
 		phase.setOrdering(phaseRequestDto.getOrdering());
 		phase.setPhase(phaseRequestDto.getPhase());
 		phase.setStartDuration(phaseRequestDto.getStartDuration());
-		phase.setStatePhase(new StatePhase(phaseRequestDto.getStatePhase().getIdStatePhase(), phaseRequestDto.getStatePhase().getState()));
+		phase.setStatePhase(new StatePhase(phaseRequestDto.getStatePhase().getIdStatePhase(),
+				phaseRequestDto.getStatePhase().getState()));
 		Phase phaseSaved = phaseRepository.save(phase);
 		// TODO validate than the users of REQUETS (phaseRequestDto) exists in DB
-		Optional.ofNullable(phaseRequestDto.getUsersAsignedToPhase()).ifPresent(users -> users.forEach(user ->
-			phaseUserRepository.save(new PhaseUser(new Phase(phaseSaved.getIdPhase()), new User(user.getIdUser())))));
-		Optional.ofNullable(phaseRequestDto.getActivitiesAsingPhase()).ifPresent(activities ->
-			activities.forEach(acitivity -> {
-					//ActivityDto activitySaved = activityServiceImpl.create(acitivity, userTokenHeader);
-					phaseActivityRepository.save(new ActivityPhase(new Activity(acitivity.getIdActivity()),	new Phase(phaseSaved.getIdPhase())));
+		Optional.ofNullable(phaseRequestDto.getUsersAsignedToPhase())
+				.ifPresent(users -> users.forEach(user -> phaseUserRepository
+						.save(new PhaseUser(new Phase(phaseSaved.getIdPhase()), new User(user.getIdUser())))));
+		Optional.ofNullable(phaseRequestDto.getActivitiesAsingPhase())
+				.ifPresent(activities -> activities.forEach(acitivity -> {
+					phaseActivityRepository.save(new ActivityPhase(new Activity(acitivity.getIdActivity()),
+							new Phase(phaseSaved.getIdPhase())));
 				}));
 		return PhaseMapper.mapperPhaseToPhaseDto(phaseSaved);
 	}

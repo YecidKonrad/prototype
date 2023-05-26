@@ -37,6 +37,7 @@ public class TaskUser implements Serializable{
 
 	public TaskUser() {
 	}
+	
 
 	public UserTaskKey getIdUserTaskKey() {
 		return idUserTaskKey;

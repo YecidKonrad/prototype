@@ -18,6 +18,7 @@ import com.prototype.domain.Task;
 import com.prototype.domain.TaskActivity;
 import com.prototype.domain.TaskUser;
 import com.prototype.domain.User;
+import com.prototype.domain.UserTaskKey;
 import com.prototype.dto.StateTaskDto;
 import com.prototype.dto.TaskDto;
 import com.prototype.dto.UserDto;
@@ -82,9 +83,16 @@ public class TaskServiceImpl implements TaskService {
 			task.setEndDuration(taskRequestDto.getEndDuration());
 			task.setIdTask(taskRequestDto.getIdTask());
 			task.setStartDuration(taskRequestDto.getStartDuration());
-			task.setStateTask(new StateTask(taskRequestDto.getStateTask().getIdStateTask(), taskRequestDto.getStateTask().getState()));
+			task.setStateTask(new StateTask(taskRequestDto.getStateTask().getIdStateTask(),
+					taskRequestDto.getStateTask().getState()));
 			task.setTittle(taskRequestDto.getTittle());
 			Task taskUpdates = taskRepository.save(task);
+			Optional.ofNullable(taskRequestDto.getUsersAsignedToTask()).ifPresent(users -> users.forEach((user) -> {
+				Optional<TaskUser> taskUser = taskUserRepository.findById(new UserTaskKey(user.getIdUser(), taskUpdates.getIdTask()));
+				if (!taskUser.isPresent()) {
+					taskUserRepository.save(new TaskUser(new Task(taskUpdates.getIdTask()), new User(user.getIdUser())));
+				}
+			}));
 			return TaskMapper.mapperTaskToTaskDto(taskUpdates);
 		}
 		return TaskMapper.mapperTaskToTaskDto(task);
@@ -120,24 +128,7 @@ public class TaskServiceImpl implements TaskService {
 		return usersAsignedToTask;
 	}
 
-	/*public void validateLastTaskFinishOfActivity(Long idTask, StateTaskDto stateTask) {
-		List<TaskActivity> tasksActivities = taskActivityRepository.findTasksActivityByTask(new Task(idTask));
-		if (tasksActivities.isEmpty()) {
-			return;
-		}
-		tasksActivities = taskActivityRepository
-				.findTaskActivityByActivity(new Activity(tasksActivities.get(0).getActivity().getIdActivity()));
-		List<TaskActivity> tasksActivitiesNoFinished = tasksActivities.stream().filter(
-				taskActivity -> !taskActivity.getTask().getStateTask().getState().equalsIgnoreCase("Finalizada"))
-				.collect(Collectors.toList());
-		if (tasksActivitiesNoFinished.size() == 1 && stateTask.getState().equalsIgnoreCase("Finalizada")) {
-			Activity activityChangeState = activityRepository
-					.findById(tasksActivitiesNoFinished.get(0).getIdTaskActivityKey().getIdActivity()).get();
-			activityChangeState.setStateActivity(new StateActivity(3L));
-			activityRepository.save(activityChangeState);
-		}
-	}*/
-	
+
 	public void validateLastTaskFinishOfActivity(Long idTask, StateTaskDto stateTask) {
 	    List<TaskActivity> tasksActivities = taskActivityRepository.findTasksActivityByTask(new Task(idTask));
 	    if (tasksActivities.isEmpty()) {
