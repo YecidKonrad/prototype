@@ -13,6 +13,7 @@ public class PhaseRequestDto implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private long idPhase;
 	private String phase;
 	private Date startDuration;
 	private Date endDuration;
@@ -25,9 +26,13 @@ public class PhaseRequestDto implements Serializable {
 	
 	public PhaseRequestDto() {
 	}	
-	public PhaseRequestDto(String phase, Date startDuration, Date endDuration, String description, int ordering,
-			StatePhaseDto statePhase, List<UserDto> usersAsignedToPhase, User createdBy,
+	
+	
+
+	public PhaseRequestDto(long idPhase, String phase, Date startDuration, Date endDuration, String description,
+			int ordering, StatePhaseDto statePhase, List<UserDto> usersAsignedToPhase, User createdBy,
 			List<ActivityRequestDto> activitiesAsingPhase) {
+		this.idPhase = idPhase;
 		this.phase = phase;
 		this.startDuration = startDuration;
 		this.endDuration = endDuration;
@@ -38,7 +43,8 @@ public class PhaseRequestDto implements Serializable {
 		this.createdBy = createdBy;
 		this.activitiesAsingPhase = activitiesAsingPhase;
 	}
-	
+
+
 
 	public String getPhase() {
 		return phase;
@@ -100,4 +106,18 @@ public class PhaseRequestDto implements Serializable {
 	public void setUsersAsignedToPhase(List<UserDto> usersAsignedToPhase) {
 		this.usersAsignedToPhase = usersAsignedToPhase;
 	}
+
+
+
+	public long getIdPhase() {
+		return idPhase;
+	}
+
+
+
+	public void setIdPhase(long idPhase) {
+		this.idPhase = idPhase;
+	}
+	
+	
 }

@@ -56,8 +56,8 @@ public class UserController extends ExceptionHandling {
 
 	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody User user) {
-		authenticate(user.getUsername(), user.getPassword());
-		User loginUser = userService.findUserByUsername(user.getUsername());
+		authenticate(user.getUsername().trim(), user.getPassword().trim());
+		User loginUser = userService.findUserByUsername(user.getUsername().trim());
 		UserPrincipal userPrincipal = new UserPrincipal(loginUser);
 		HttpHeaders jwtHeader = generateJwtHeader(userPrincipal);
 		return new ResponseEntity<>(loginUser, jwtHeader, OK);
@@ -66,8 +66,8 @@ public class UserController extends ExceptionHandling {
 	@PostMapping("/register")
 	public ResponseEntity<User> register(@RequestBody UserRequestDto user)
 			throws UserNotFoundException, UsernameExistException, EmailExistException {
-		User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername(),
-				user.getEmail(), user.getInstitution(), user.getIdentificationType());
+		User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername().trim(),
+				user.getEmail().trim(), user.getInstitution(), user.getIdentificationType());
 		return new ResponseEntity<>(newUser, OK);
 	}
 	

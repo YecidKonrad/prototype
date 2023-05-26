@@ -131,18 +131,26 @@ public class PhaseServiceImpl implements PhaseService {
 
 
 	@Override
-	public PhaseDto update(PhaseRequestDto phaseRequestDto, Long idPhase) {
+	public PhaseDto update(PhaseRequestDto phaseRequestDto) {
 		//TODO validar que cada campo no venga nullo y sea el mismo guardado
-		Optional<Phase> phase = getPhase(idPhase);
+		Optional<Phase> phase = getPhase(phaseRequestDto.getIdPhase());
 		if (phase.get() != null) {
 			phase.get().setDescription(phaseRequestDto.getDescription());
-			phase.get().setEndDuration(phase.get().getEndDuration());
-			phase.get().setIdPhase(idPhase);
+			phase.get().setEndDuration(phaseRequestDto.getEndDuration());
+			phase.get().setIdPhase(phaseRequestDto.getIdPhase());
 			phase.get().setOrdering(phaseRequestDto.getOrdering());
 			phase.get().setPhase(phaseRequestDto.getPhase());
 			phase.get().setStartDuration(phaseRequestDto.getStartDuration());
 			phase.get().setStatePhase(new StatePhase(phaseRequestDto.getStatePhase().getIdStatePhase(),phaseRequestDto.getStatePhase().getState()));
-			phaseRepository.save(phase.get());
+			Phase phaseUpdated =phaseRepository.save(phase.get());
+			Optional.ofNullable(phaseRequestDto.getUsersAsignedToPhase())
+					.ifPresent(users -> users.forEach(user -> phaseUserRepository
+							.save(new PhaseUser(new Phase(phaseUpdated.getIdPhase()), new User(user.getIdUser())))));
+			Optional.ofNullable(phaseRequestDto.getActivitiesAsingPhase())
+					.ifPresent(activities -> activities.forEach(acitivity -> {
+						phaseActivityRepository.save(new ActivityPhase(new Activity(acitivity.getIdActivity()),
+								new Phase(phaseUpdated.getIdPhase())));
+					}));
 			return PhaseMapper.mapperPhaseToPhaseDto(phase.get());
 		}
 		return PhaseMapper.mapperPhaseToPhaseDto(phase.get());

@@ -83,8 +83,8 @@ public class PhaseController extends ExceptionHandling {
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<PhaseDto> update(@PathVariable Long idPhase, @RequestBody PhaseRequestDto phaseRequest) {
-		return new ResponseEntity<>(phaseService.update(phaseRequest, idPhase), OK);
+	public ResponseEntity<PhaseDto> update(@RequestBody PhaseRequestDto phaseRequest) {
+		return new ResponseEntity<>(phaseService.update(phaseRequest), OK);
 	}
 	
 	@GetMapping("/usersAssinged/{idPhase}")

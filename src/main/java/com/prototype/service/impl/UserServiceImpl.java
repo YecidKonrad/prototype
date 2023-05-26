@@ -105,8 +105,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         LOGGER.info("New user password: " + password);
         EmailDetails details = new EmailDetails();
         details.setRecipient(userSaved.getEmail());
-        details.setSubject("Welcome " + firstName + password);
-        details.setMsgBody(MailTemplate.getTemplate());
+        details.setSubject("Welcome " + firstName + " - [ " + username +" ] !");
+        details.setMsgBody(MailTemplate.getTemplate().replace("@password", password).replace("@email", email));
         String status = emailService.sendSimpleMail(details);
         LOGGER.info(status);
         return userSaved;

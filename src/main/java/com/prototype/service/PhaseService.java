@@ -21,7 +21,7 @@ public interface PhaseService {
     Optional<Phase> getPhase(Long idPhase);
     PhaseDto getPhaseDetail(Long idPhase);
     Map<String,String> deletePhase(Long idPhase);
-    PhaseDto update(PhaseRequestDto phaseRequestDto, Long idPhase);
+    PhaseDto update(PhaseRequestDto phaseRequestDto);
     List<UserDto> usersAssinged(Long idPhase);
 	List<UserDto> assingUser(Map<String,String> usersAsingPhase, Long idPhase);
 	List<ActivityDto> addActivitiesAssinged(Long idPhase, List<ActivityRequestDto> activitiesAssinged, String userTokenHeader);
