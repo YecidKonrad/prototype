@@ -14,10 +14,13 @@ public class ActivityDto {
 	private StateActivityDto stateActivity;
 	private UserDto createdBy;
 	private List<UserDto> usersAsignedToActivity;
+	private List<TaskDto> tasksAsignedToActivity;
 	
+
+
 	public ActivityDto(Long idActivity, String tittle, String description, Date startDuration, Date endDuration,
 			Date createdDate, int priority, StateActivityDto stateActivity, UserDto createdBy,
-			List<UserDto> usersAsignedToActivity) {
+			List<UserDto> usersAsignedToActivity, List<TaskDto> tasksAsignedToActivity) {
 		this.idActivity = idActivity;
 		this.tittle = tittle;
 		this.description = description;
@@ -28,6 +31,7 @@ public class ActivityDto {
 		this.stateActivity = stateActivity;
 		this.createdBy = createdBy;
 		this.usersAsignedToActivity = usersAsignedToActivity;
+		this.tasksAsignedToActivity = tasksAsignedToActivity;
 	}
 
 	public ActivityDto() {
@@ -111,10 +115,15 @@ public class ActivityDto {
 
 	public void setUsersAsignedToActivity(List<UserDto> usersAsignedToActivity) {
 		this.usersAsignedToActivity = usersAsignedToActivity;
+	}	
+
+	public List<TaskDto> getTasksAsignedToActivity() {
+		return tasksAsignedToActivity;
 	}
 
-	
-	
+	public void setTasksAsignedToActivity(List<TaskDto> tasksAsignedToActivity) {
+		this.tasksAsignedToActivity = tasksAsignedToActivity;
+	}
 	
 
 	

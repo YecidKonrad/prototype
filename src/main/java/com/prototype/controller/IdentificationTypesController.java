@@ -1,5 +1,6 @@
 package com.prototype.controller;
 
+import static com.prototype.constant.SecurityConstant.JWT_TOKEN_HEADER;
 import static org.springframework.http.HttpStatus.OK;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import com.prototype.service.IdentificationTypesService;
 import com.prototype.utility.JWTTokenProvider;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",  exposedHeaders = {JWT_TOKEN_HEADER})
 @RequestMapping(path = { "/identifications-types" })
 public class IdentificationTypesController extends ExceptionHandling{
 	private IdentificationTypesService identificationTypesService;

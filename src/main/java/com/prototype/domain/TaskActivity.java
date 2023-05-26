@@ -29,5 +29,37 @@ public class TaskActivity implements Serializable{
 	@JoinColumn(name = "id_task", nullable = false, foreignKey = @ForeignKey(name = "fk_task_activity_task"))
 	private Task task;
 
+	public TaskActivity(Activity activity, Task task) {
+		this.activity = activity;
+		this.task = task;
+	}
 
+	public TaskActivity() {
+	}
+
+	public TaskActivityKey getIdTaskActivityKey() {
+		return idTaskActivityKey;
+	}
+
+	public void setIdTaskActivityKey(TaskActivityKey idTaskActivityKey) {
+		this.idTaskActivityKey = idTaskActivityKey;
+	}
+
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+
+	
 }

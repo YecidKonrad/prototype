@@ -202,9 +202,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public User add(UserRequestDto user) throws UserNotFoundException, UsernameExistException, EmailExistException, IOException {
-
-		User userSaved = register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), null, user.getIdentificationType());
-		uploadFile(user.getUsername(), user.getProfileImage());
+		User userSaved = register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), user.getInstitution(), user.getIdentificationType());
 		return userSaved;
 	}
 
@@ -229,7 +227,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			User userSaved = userRepository.save(userExits);
 			return userSaved;
 		}
-		return null;
+		return userExits;
 	}
 
 }
