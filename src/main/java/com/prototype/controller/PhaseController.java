@@ -45,18 +45,10 @@ public class PhaseController extends ExceptionHandling {
 	@PostMapping("/create")
 	public ResponseEntity<PhaseDto> create(@RequestHeader(JWT_TOKEN_HEADER) String tokenHeader,
 			@RequestBody PhaseRequestDto phaseRequest) {
-		JsonMapper mapper = new JsonMapper();
-		try {
-			System.out.println(mapper.writeValueAsString(phaseRequest));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		PhaseDto responsePhase = phaseService.create(phaseRequest, jwtTokenProvider.getSubject(tokenHeader));
 		return new ResponseEntity<>(responsePhase, OK);
 	}
 
-	// TODO solicitar Token getPhases
 	@GetMapping("/phasesDetails")
 	public ResponseEntity<?> getPhasesDetails() {
 		return new ResponseEntity<>(phaseService.getAllPhasesDetails(), OK);

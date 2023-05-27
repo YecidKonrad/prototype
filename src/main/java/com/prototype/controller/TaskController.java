@@ -60,14 +60,6 @@ public class TaskController extends ExceptionHandling {
 	public ResponseEntity<List<StateTaskDto>> getTaskStates() {
 		return new ResponseEntity<>(taskService.getStatesTask(), OK);
 	}
-	//TODO obtener detalle de actividades
-	//TODO obtener actividad Detalle por ID
-	//TODO obtener actividad por ID
-	//TODO modificar actividad
-	//TODO agregar usuarios a una actividad
-	//TODO agregar fases a una actividad
-	//TODO modificar fases de una actividad
-	//TODO eliminar fases de un actividad
 
 
 }
