@@ -31,3 +31,4 @@ To get started with the Prototype Application, follow these steps:
 ## Usage
 
 - The Prototype Application provides APIs for managing phases, activities, and tasks.
+- Create a DataBase with name acceso, and the application going to create Tables
