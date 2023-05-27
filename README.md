@@ -1,2 +1,2 @@
 # prototype
-Principal Branch master
+Principal Branch: master
