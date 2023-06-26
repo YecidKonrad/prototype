@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setNotLocked(true);
         user.setRole(ROLE_SUPER_ADMIN.name());
         user.setAuthorities(ROLE_SUPER_ADMIN.getAuthorities());
-        user.setProfileImageUrl(getTemporaryProfileImageUrl()+username+"svg" );
+        user.setProfileImageUrl(getTemporaryProfileImageUrl()+username+".svg" );
         user.setIdentificationType(new IdentificationTypes(identificationType));
         User userSaved = userRepository.save(user);
         LOGGER.info("New user password: " + password);
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public User add(UserRequestDto user) throws UserNotFoundException, UsernameExistException, EmailExistException, IOException {
-		User userSaved = register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), user.getInstitution(), user.getIdentificationType());
+		User userSaved = register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), user.getInstitution(), user.getIdentificationType().getIdIdentificationType());
 		return userSaved;
 	}
 
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			userExits.setRole(user.getRole());
 			userExits.setAuthorities(Role.valueOf(user.getRole()).getAuthorities());
 		//	userExits.setProfileImageUrl(getTemporaryProfileImageUrl());
-			userExits.setIdentificationType(new IdentificationTypes(user.getIdentificationType()));
+			userExits.setIdentificationType(new IdentificationTypes(user.getIdentificationType().getIdIdentificationType()));
 			//uploadFile(user.getUsername(), user.getProfileImage());
 			User userSaved = userRepository.save(userExits);
 			return userSaved;

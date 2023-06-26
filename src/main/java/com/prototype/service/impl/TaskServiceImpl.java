@@ -83,8 +83,7 @@ public class TaskServiceImpl implements TaskService {
 			task.setEndDuration(taskRequestDto.getEndDuration());
 			task.setIdTask(taskRequestDto.getIdTask());
 			task.setStartDuration(taskRequestDto.getStartDuration());
-			task.setStateTask(new StateTask(taskRequestDto.getStateTask().getIdStateTask(),
-					taskRequestDto.getStateTask().getState()));
+			task.setStateTask(new StateTask(taskRequestDto.getStateTask().getIdStateTask(),	taskRequestDto.getStateTask().getState()));
 			task.setTittle(taskRequestDto.getTittle());
 			Task taskUpdates = taskRepository.save(task);
 			Optional.ofNullable(taskRequestDto.getUsersAsignedToTask()).ifPresent(users -> users.forEach((user) -> {

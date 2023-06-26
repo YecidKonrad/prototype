@@ -16,7 +16,7 @@ public class UserRequestDto implements Serializable{
 	private String  username;
 	private String  email;
 	private String  institution;
-	private Long identificationType;
+	private IdentificationTypesDto identificationType;
 	private String currentUsername;
 	@JsonIgnore
 	private MultipartFile profileImage;
@@ -26,9 +26,10 @@ public class UserRequestDto implements Serializable{
 	
 	
 
+
 	public UserRequestDto(String firstName, String lastName, String username, String email, String institution,
-			Long identificationType, String currentUsername, MultipartFile profileImage, boolean active,
-			boolean isNonLocked, String role) {
+			IdentificationTypesDto identificationType, String currentUsername, MultipartFile profileImage,
+			boolean active, boolean isNonLocked, String role) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
@@ -86,11 +87,11 @@ public class UserRequestDto implements Serializable{
 	}
 	
 
-	public Long getIdentificationType() {
+	public IdentificationTypesDto getIdentificationType() {
 		return identificationType;
 	}
 
-	public void setIdentificationType(Long identificationType) {
+	public void setIdentificationType(IdentificationTypesDto identificationType) {
 		this.identificationType = identificationType;
 	}
 
