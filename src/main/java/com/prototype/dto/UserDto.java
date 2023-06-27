@@ -83,6 +83,17 @@ public class UserDto implements Serializable{
 		public void setIdUser(Long idUser) {
 			this.idUser = idUser;
 		}
+		
+		// Método para obtener el nombre completo
+	    public String getFullName() {
+	        // Verificar que los atributos no estén vacíos
+	        if (firstName.isEmpty() || lastName.isEmpty()) {
+	            return "Faltan datos";
+	        }
+	        
+	        // Concatenar el nombre completo con espacios
+	        return firstName + " " + lastName;
+	    }
 	    
 	    
 }
